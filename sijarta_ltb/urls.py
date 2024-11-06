@@ -1,5 +1,5 @@
 """
-URL configuration for roso_jogja project.
+URL configuration for sijarta_ltb project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -23,6 +23,7 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
+    path("users/", include("users.urls")),
 ]
 
 if settings.DEBUG:
