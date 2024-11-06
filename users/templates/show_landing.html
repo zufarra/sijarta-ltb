@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Welcome</title>
+{% endblock meta %}
+{% block content %}
+    <section class="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold">Welcome to SIJARTA</h1>
+            <h4 class="mb-3">By</h4>
+            <h2 class="display-4 text-warning fw-medium">Lapis Talas Bogor</h2>
+            <div class="mt-5 d-flex flex-column gap-3">
+                <a class="btn btn-lg btn-primary shadow-lg px-5"
+                   href="{% url 'user:show_login' %}">Login</a>
+                <a class="btn btn-lg btn-success shadow-lg px-5"
+                   href="{% url 'user:show_register' %}">Register</a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

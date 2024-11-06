@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Profile Page</title>
+{% endblock meta %}
+{% block content %}
+    {% include 'navbar.html' %}
+    <h1>{{ name }}</h1>
+    <p>{{ email }}</p>
+{% endblock %}
