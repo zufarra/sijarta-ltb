@@ -85,9 +85,9 @@
           </li>
         </ul>
       </div>
-      {% if user.is_authenticated %} {% if user.is_pelanggan %}
+      {% if user.is_authenticated %} {% if user.is_pengguna %}
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <!-- Navbar for Pelanggan (Customer) -->
+        <!-- Navbar for Pengguna (Customer) -->
         <li class="nav-item">
           <a class="nav-link" href="">Homepage</a>
         </li>
@@ -101,13 +101,11 @@
           <a class="nav-link" href="">Diskon</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Profile</a>
+          <a class="nav-link" href="{% url 'user:show_profile' %}">Profile</a>
         </li>
       </ul>
       <div class="d-flex gap-3">
-        <span class="navbar-text"
-          >Logged in as {{ user.name }} (Pelanggan)</span
-        >
+        <span class="navbar-text">Logged in as {{ user.name }} (Pengguna)</span>
         <a class="btn btn-danger" href="#">Logout</a>
       </div>
       {% else %}
