@@ -85,24 +85,72 @@
           </li>
         </ul>
       </div>
+      {% if user.is_authenticated %} {% if user.is_pelanggan %}
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <!-- Navbar for Pelanggan (Customer) -->
+        <li class="nav-item">
+          <a class="nav-link" href="">Homepage</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">MyPay</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Kelola Pesanan Saya</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Diskon</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Profile</a>
+        </li>
+      </ul>
+      <div class="d-flex gap-3">
+        <span class="navbar-text"
+          >Logged in as {{ user.name }} (Pelanggan)</span
+        >
+        <a class="btn btn-danger" href="#">Logout</a>
+      </div>
+      {% else %}
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <!-- Navbar for Pekerja (Worker) -->
+        <li class="nav-item">
+          <a class="nav-link" href="">Homepage</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Kelola Pekerjaan Saya</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Kelola Status Pekerjaan</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">MyPay</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Logout</a>
+        </li>
+      </ul>
+      <div class="d-flex gap-3">
+        <span class="navbar-text">Logged in as {{ user.name }} (Pekerja)</span>
+        <a class="btn btn-danger" href="#">Logout</a>
+      </div>
+      {% endif %} {% else %}
+      <!-- Navbar for Guest (Not Logged In) -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
         <li class="nav-item">
-          <a
-            class="btn btn-primary"
-            aria-current="page"
-            href="{% url 'user:show_login' %}"
+          <a class="btn btn-primary" href="{% url 'user:show_login' %}"
             >Login</a
           >
         </li>
         <li class="nav-item">
-          <a
-            class="btn btn-success"
-            aria-current="page"
-            href="{% url 'user:show_register' %}"
+          <a class="btn btn-success" href="{% url 'user:show_register' %}"
             >Register</a
           >
         </li>
       </ul>
+      {% endif %}
     </div>
   </div>
 </nav>
