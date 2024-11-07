@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block meta %}
-    <title>Profile Page</title>
+    <title>Login</title>
 {% endblock meta %}
 {% block content %}
     {% include 'navbar.html' %}
@@ -19,8 +19,8 @@
                                    pattern="^0?8\d{7,12}$"
                                    required>
                             <label for="inputTel">Phone Number</label>
+                            <div id="telHelp" class="form-text">We'll never share your phone number with anyone else.</div>
                         </div>
-                        <div id="telHelp" class="form-text">We'll never share your phone number with anyone else.</div>
                         <div class="mb-3 form-floating">
                             <input type="password"
                                    class="form-control"
