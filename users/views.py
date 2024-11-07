@@ -12,7 +12,7 @@ def show_profile(request):
         "user": {
             "is_authenticated": True,
             "name": "John Doe",
-            "is_pengguna": True,
+            "is_pengguna": False,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",

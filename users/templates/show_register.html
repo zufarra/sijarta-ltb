@@ -40,12 +40,22 @@
                              id="pengguna-form-tab-pane"
                              role="tabpanel"
                              aria-labelledby="pengguna-form-tab"
-                             tabindex="0">{% include 'register_pengguna_form.html' %}</div>
+                             tabindex="0">
+                            <form class="card-body">
+                                {% include 'register_pengguna_form.html' %}
+                                <button type="submit" class="btn btn-success">Register</button>
+                            </form>
+                        </div>
                         <div class="tab-pane fade"
                              id="pekerja-form-tab-pane"
                              role="tabpanel"
                              aria-labelledby="pekerja-form-tab"
-                             tabindex="0">{% include 'register_pekerja_form.html' %}</div>
+                             tabindex="0">
+                            <form class="card-body">
+                                {% include 'register_pengguna_form.html' %}
+                                <button type="submit" class="btn btn-success">Register</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
