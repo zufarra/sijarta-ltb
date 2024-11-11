@@ -42,6 +42,15 @@
       localStorage.setItem("theme", "dark");
     }
 
+    function colorMode(){
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        setLightMode();
+      } else {
+        setDarkMode();
+      }
+    }
+
     // Check saved theme preference on page load
     document.addEventListener("DOMContentLoaded", () => {
       const savedTheme = localStorage.getItem("theme");

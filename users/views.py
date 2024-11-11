@@ -12,7 +12,7 @@ def show_profile(request):
         "user": {
             "is_authenticated": True,
             "name": "John Doe",
-            "is_pelanggan": True,
+            "is_pengguna": True,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
@@ -27,7 +27,7 @@ def show_login(request):
         "user": {
             "is_authenticated": True,
             "name": "John Doe",
-            "is_pelanggan": True,
+            "is_pengguna": True,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
@@ -42,7 +42,7 @@ def show_register(request):
         "user": {
             "is_authenticated": True,
             "name": "John Doe",
-            "is_pelanggan": True,
+            "is_pengguna": True,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
