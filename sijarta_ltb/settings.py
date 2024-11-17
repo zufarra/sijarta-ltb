@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "users",
+    "services_and_booking",
 ]
 
 MIDDLEWARE = [

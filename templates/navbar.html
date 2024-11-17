@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand mb-0 h1" href="/">SIJARTA by LTB</a>
+    <a class="navbar-brand mb-0 h1" href="{% url 'service:show_homepage' %}">SIJARTA by LTB</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -43,13 +43,13 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <!-- Navbar for Pengguna (Customer) -->
         <li class="nav-item">
-          <a class="nav-link" href="">Homepage</a>
+          <a class="nav-link" href="{% url 'service:show_homepage' %}">Homepage</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">MyPay</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Kelola Pesanan Saya</a>
+          <a class="nav-link" href="{% url 'service:show_booking_view' %}">Kelola Pesanan Saya</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">Diskon</a>
