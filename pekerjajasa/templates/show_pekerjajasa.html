@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<title>MyPay</title>
+{% endblock meta %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mt-4">
+<div class="border rounded p-2 mt-3 mb-3">
+    <div class="container text-center">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2 mb-1">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" id="kategori" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Kategori
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#" id="kategori">Home Cleaning</a></li>
+                  <li><a class="dropdown-item" href="#" id="kategori">Massage</a></li>
+                </ul>
+              </div>              
+          </div>
+          <div class="col-md-auto mb-1">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Subkategori
+                </button>
+                <ul class="dropdown-menu" id="subkategori">
+                  <!-- <li><a class="dropdown-item" href="#">Action</a></li> -->
+                </ul>
+              </div>
+              
+          </div>
+          <div class="col col-lg-2">
+            <button type="button" class="btn btn-primary text-white w-100">Search</button>
+          </div>
+        </div>
+    </div>
+    </div>
+    <div class="border rounded p-3" id="state">
+        <div class="card mb-2">
+            <div class="card-header">
+                <h5> Nama Subkategori Pesanan</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Nama pelanggan</p>
+              <p class="card-text">Tanggal Pemesanan</p>
+              <p class="card-text">Tanggal Pekerjaan</p>
+              <p class="card-text">Total biaya</p>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+          <div class="card mb-2">
+            <div class="card-header">
+                <h5>Nama Subkategori Pesanan</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Nama pelanggan</p>
+              <p class="card-text">Tanggal Pemesanan</p>
+              <p class="card-text">Tanggal Pekerjaan</p>
+              <p class="card-text">Total biaya</p>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+          <div class="card mb-2">
+            <div class="card-header">
+                <h5> Nama Subkategori Pesanan</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Nama pelanggan</p>
+              <p class="card-text">Tanggal Pemesanan</p>
+              <p class="card-text">Tanggal Pekerjaan</p>
+              <p class="card-text">Total biaya</p>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const kategoris = document.querySelectorAll('#kategori');
+        const kategoritr = document.getElementById('subkategori');
+        const kategori = document.getElementById('kategori')
+        let state = ``;
+        const state_1 = `
+        <li><a class="dropdown-item" href="#">Setrika</a></li>
+        <li><a class="dropdown-item" href="#">Daily Cleaning</a></li>
+        <li><a class="dropdown-item" href="#">Pembersihan Dapur</a></li>`;
+        const state_2 = ``;
+        
+        kategoris.forEach(item => {
+            item.addEventListener('click', function () {
+                const category = this.textContent.trim();
+                switch (category) {
+                    case 'Home Cleaning':
+                        state = state_1;
+                        break;
+                    case 'Massage':
+                        state = state_2;
+                        break;
+                    default:
+                        state = ``;
+                        break;
+                }
+                kategoritr.innerHTML = `${state}`;
+                kategori.innerHTML = `${category}`;
+            });
+        });
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<title>MyPay</title>
+{% endblock meta %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mt-4">
+    <div class="border rounded p-3 mb-3">
+        <div class="container">
+            <div class="row g-3 align-items-center justify-content-center">
+                <div class="col-lg-5">
+                    <input type="text" class="form-control" placeholder="Nama Jasa">
+                </div>
+                <div class="col-lg-3">
+                    <div class="dropdown">
+                        <button class="btn btn-success dropdown-toggle w-100" id="kategori" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Status
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item w-100" href="#" id="kategori">Status 1</a></li>
+                        </ul>
+                      </div>     
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-success w-100 text-white">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="border rounded p-3" id="state">
+        <div class="card mb-2">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5> Nama Subkategori Pesanan</h5>
+                    <h5> Status pemesanan</h5>
+                </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Nama pelanggan</p>
+              <p class="card-text">Tanggal Pemesanan</p>
+              <p class="card-text">Tanggal Pekerjaan</p>
+              <p class="card-text">Total biaya</p>
+              <a href="#" class="btn btn-primary">Update Status</a>
+            </div>
+          </div>
+    </div>
+  </div>
+
+{% endblock content %}
