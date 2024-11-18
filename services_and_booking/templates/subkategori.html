@@ -106,6 +106,43 @@
             </div>
             {% endif %}
         </div>
+
+        <br>
+
+        <h4>Testimoni</h4>
+        <div class="testimoni-card">
+            <div class="testimoni-header">
+                <h5>John Doe</h5>
+                <small>18 November 2024</small>
+            </div>
+            <div class="testimoni-body">
+                <p>Teks Testimoni: Pelayanan sangat baik dan cepat!</p>
+                <p>Nama Pekerja: <strong>Alex</strong></p>
+                <p>Rating: <span class="rating">⭐⭐⭐⭐⭐</span></p>
+            </div>
+        </div>
+        <div class="testimoni-card">
+            <div class="testimoni-header">
+                <h5>Jane Smith</h5>
+                <small>17 November 2024</small>
+            </div>
+            <div class="testimoni-body">
+                <p>Teks Testimoni: Sangat puas dengan hasil pekerjaan!</p>
+                <p>Nama Pekerja: <strong>Maria</strong></p>
+                <p>Rating: <span class="rating">⭐⭐⭐⭐⭐</span></p>
+            </div>
+        </div>
+        <div class="testimoni-card">
+            <div class="testimoni-header">
+                <h5>Michael Lee</h5>
+                <small>16 November 2024</small>
+            </div>
+            <div class="testimoni-body">
+                <p>Teks Testimoni: Harga sesuai kualitas, sangat recommended!</p>
+                <p>Nama Pekerja: <strong>David</strong></p>
+                <p>Rating: <span class="rating">⭐⭐⭐⭐</span></p>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="pesanModal" tabindex="-1" aria-labelledby="pesanModalLabel" aria-hidden="true">
@@ -148,6 +185,8 @@
         </div>
     </div>
 
+    
+
 <style>
     .clickable-box {
         border: 1px solid #ddd;
@@ -166,6 +205,38 @@
     .modal-body p {
         margin-bottom: 0.5rem;
         text-align: center;
+    }
+
+    .testimoni-card {
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .testimoni-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    .testimoni-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .testimoni-header h5 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+    .testimoni-header small {
+        color: #6c757d;
+    }
+    .testimoni-body {
+        margin-top: 10px;
+    }
+    .rating {
+        color: #ffcc00;
+        font-weight: bold;
     }
 </style>
 {% endblock %}

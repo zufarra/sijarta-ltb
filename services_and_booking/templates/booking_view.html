@@ -4,6 +4,41 @@
 {% endblock meta %}
 {% block content %}
     {% include 'navbar.html' %}
+    <div class="modal fade" id="testimoniModal" tabindex="-1" aria-labelledby="testimoniModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="testimoniModalLabel">Form Testimoni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="testimoniForm">
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating:</label>
+                            <select class="form-select" id="rating" required>
+                                <option value="" disabled selected>Pilih rating</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="komentar" class="form-label">Komentar:</label>
+                            <textarea class="form-control" id="komentar" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container my-5">
         <h2 class="text-center">View Pemesanan Jasa</h2>
@@ -66,7 +101,8 @@
                             {% if pesanan.status == "Menunggu Pembayaran" or pesanan.status == "Mencari Pekerja Terdekat" %}
                                 <button class="btn btn-danger">Batalkan</button>
                             {% elif pesanan.status == "Pesanan Selesai" %}
-                                <button class="btn btn-primary">Buat Testimoni</button>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testimoniModal">Buat Testimoni</button>
+                                
                             {% endif %}
                         </td>
                     </tr>
