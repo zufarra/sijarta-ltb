@@ -25,7 +25,9 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path("users/", include("users.urls")),
     path("mypay/", include("mypay.urls")),
-    path("pekerjajasa/", include("pekerjajasa.urls"))
+    path("pekerjajasa/", include("pekerjajasa.urls")),
+    path("diskon/", include("diskon.urls")),
+    path('service/', include('services_and_booking.urls')),
 ]
 
 if settings.DEBUG:
