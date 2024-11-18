@@ -25,10 +25,10 @@
                         <li>
                             <a class="dropdown-item" href="#">TopUp MyPay</a>
                         </li>
-                        {% if user.is_pekerja %}
-                        <li>
-                            <a class="dropdown-item" href="#">Bayar Transaksi</a>
-                        </li>
+                        {% if user.is_pengguna %}
+                            <li>
+                                <a class="dropdown-item" href="#">Bayar Transaksi</a>
+                            </li>
                         {% endif %}
                         <li>
                             <a class="dropdown-item" href="#">Transfer MyPay</a>
@@ -141,4 +141,3 @@
         });
         </script>
     {% endblock content %}
-
