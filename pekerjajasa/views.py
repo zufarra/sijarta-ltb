@@ -5,7 +5,7 @@ def pekerjajasa_view(request) :
     context = {
         "user": {
             "is_authenticated": True,
-            "name": "John Doe",
+            "name": "Powder",
             "is_pengguna": False,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
@@ -20,7 +20,7 @@ def status_view(request) :
     context = {
         "user": {
             "is_authenticated": True,
-            "name": "John Doe",
+            "name": "Powder",
             "is_pengguna": False,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",

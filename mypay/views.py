@@ -5,8 +5,8 @@ def mypay_view(request) :
     context = {
         "user": {
             "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
+            "name": "Vander",
+            "is_pengguna": False,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
@@ -18,8 +18,8 @@ def transaksi_mypay(request) :
     context = {
         "user": {
             "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
+            "name": "Vander",
+            "is_pengguna": False,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
