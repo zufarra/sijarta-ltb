@@ -76,6 +76,9 @@
           >
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'mypay:mypay_view' %}">MyPay</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'pekerjajasa:pekerjajasa_view' %}"
             >Kelola Pekerjaan Saya</a
           >
@@ -84,9 +87,6 @@
           <a class="nav-link" href="{% url 'pekerjajasa:status_view' %}"
             >Kelola Status Pekerjaan</a
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'mypay:mypay_view' %}">MyPay</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'user:show_profile' %}">Profile</a>

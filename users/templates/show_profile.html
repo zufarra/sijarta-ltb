@@ -31,7 +31,7 @@
                         </div>
                         <div class="row">
                             <p class="card-text col-sm-2">Birthdate:</p>
-                            <p class="card-text col-sm-10">{{ user.birhtdate }}</p>
+                            <p class="card-text col-sm-10">{{ user.birthdate }}</p>
                         </div>
                         <div class="row">
                             <p class="card-text col-sm-2">Address:</p>
@@ -44,26 +44,26 @@
                         {% if not user.is_pengguna %}
                             <div class="row">
                                 <p class="card-text col-sm-2">Bank:</p>
-                                <p class="card-text col-sm-10">{{ user.balance }}</p>
+                                <p class="card-text col-sm-10">{{ user.bank }}</p>
                             </div>
                             <div class="row">
                                 <p class="card-text col-sm-2">Bank Account Number:</p>
-                                <p class="card-text col-sm-10">{{ user.balance }}</p>
+                                <p class="card-text col-sm-10">{{ user.account_number }}</p>
                             </div>
                             <div class="row">
                                 <p class="card-text col-sm-2">NPWP:</p>
-                                <p class="card-text col-sm-10">{{ user.balance }}</p>
+                                <p class="card-text col-sm-10">{{ user.npwp }}</p>
                             </div>
                             <div class="row">
                                 <p class="card-text col-sm-2">Rating:</p>
-                                <p class="card-text col-sm-10">{{ user.balance }}</p>
+                                <p class="card-text col-sm-10">{{ user.rating }}</p>
                             </div>
                         {% endif %}
                     </div>
                     <div class="card-footer text-end">
                         <!-- Button trigger modal -->
                         <button type="button"
-                                class="btn btn-info"
+                                class="btn btn-primary"
                                 data-bs-toggle="modal"
                                 data-bs-target="#updateInfoModal">Update Info</button>
                         <!-- Modal -->

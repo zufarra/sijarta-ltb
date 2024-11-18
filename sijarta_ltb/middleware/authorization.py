@@ -29,8 +29,16 @@ class AuthorizationMiddleware:
         return {
             "is_authenticated": True,
             "name": "John Doe",
-            "is_pengguna": False,
+            "is_pengguna": True,
             "email": "johndoe@mail.com",
             "phone": "123-456-7890",
             "address": "1234 Elm St",
+            "gender": "Male",
+            "level": "Gold",
+            "birthdate": "1990-01-01",
+            "balance": 5000000,
+            "bank": "GoPay",
+            "account_number": "1234567890",
+            "npwp": "1234567890",
+            "rating": 9.5,
         }
