@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "users",
     "mypay",
     "pekerjajasa",
+    "diskon",
+    "services_and_booking",
 ]
 
 MIDDLEWARE = [

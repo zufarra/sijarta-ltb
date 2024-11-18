@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Diskon</title>
+{% endblock meta %}
+{% block content %}
+    {% include 'navbar.html' %}
+    <!-- Modal Sukses -->
+    <div class="modal fade" id="modalSukses" tabindex="-1" aria-labelledby="modalSuksesLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSuksesLabel">SUKSES</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Selamat! Anda berhasil membeli voucher kode XXX. Voucher ini akan berlaku hingga tanggal XX/XX/XXXX dengan kuota penggunaan sebanyak X kali.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gagal -->
+    <div class="modal fade" id="modalGagal" tabindex="-1" aria-labelledby="modalGagalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalGagalLabel">GAGAL</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Maaf, saldo Anda tidak cukup untuk membeli voucher ini.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container my-5">
+        <!-- Diskon Section -->
+        <h2 class="text-center mb-4">DISKON</h2>
+        <!-- Voucher Section -->
+        <div class="card mb-5">
+            <div class="card-body">
+                <h4 class="card-title">Voucher</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Potongan</th>
+                                <th>Min Transaksi Pemesanan</th>
+                                <th>Jumlah Hari Berlaku</th>
+                                <th>Kuota Penggunaan</th>
+                                <th>Harga</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for voucher in Voucher %}
+                            <tr>
+                                <td>{{ voucher.Kode }}</td>
+                                <td>{{ voucher.Potongan }}</td>
+                                <td>{{ voucher.Min_Transaksi_Pemesanan }}</td>
+                                <td>{{ voucher.Jumlah_Hari_Berlaku }}</td>
+                                <td>{{ voucher.Kuota_Penggunaan }}</td>
+                                <td>{{ voucher.Harga }}</td>
+                                <td>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary" 
+                                        data-harga="{{ voucher.Harga }}" 
+                                        data-kode="{{ voucher.Kode }}" 
+                                        data-kuota="{{ voucher.Kuota_Penggunaan }}" 
+                                        onclick="handleBeli(this)">
+                                        Beli
+                                    </button>
+                                </td>
+                                                              
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo Section -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Promo</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Tanggal Akhir Berlaku</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for promo in Promo %}
+                            <tr>
+                                <td>{{ promo.Kode }}</td>
+                                <td>{{ promo.Tanggal_Akhir_Berlaku }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Saldo pengguna (simulasi)
+        const saldoPengguna = 50000; // Contoh saldo pengguna untuk demo
+    
+        function handleBeli(button) {
+            // Ambil data dari atribut tombol
+            const hargaVoucher = parseInt(button.getAttribute('data-harga'));
+            const kodeVoucher = button.getAttribute('data-kode');
+            const kuotaPenggunaan = button.getAttribute('data-kuota');
+    
+            if (saldoPengguna >= hargaVoucher) {
+                // Jika saldo cukup, perbarui konten modal sukses dengan data voucher
+                const modalSukses = new bootstrap.Modal(document.getElementById('modalSukses'));
+                const modalBody = document.querySelector('#modalSukses .modal-body');
+                
+                modalBody.innerHTML = `
+                    Selamat! Anda berhasil membeli voucher kode <strong>${kodeVoucher}</strong>. 
+                    Voucher ini akan berlaku hingga tanggal XX/XX/XXXX
+                    dengan kuota penggunaan sebanyak <strong>${kuotaPenggunaan}</strong> kali.
+                `;
+                
+                modalSukses.show();
+            } else {
+                // Jika saldo tidak cukup, tampilkan modal gagal
+                const modalGagal = new bootstrap.Modal(document.getElementById('modalGagal'));
+                modalGagal.show();
+            }
+        }
+    </script>
+    
+    
+{% endblock content %}
