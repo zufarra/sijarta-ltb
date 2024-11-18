@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 def pekerjajasa_view(request):
     context = {
-        "user": request.user,
+        "user": request.user
     }
     if context["user"]["is_pengguna"]:
         return HttpResponse("Unauthorized", status=401)
@@ -13,7 +13,7 @@ def pekerjajasa_view(request):
 
 def status_view(request):
     context = {
-        "user": request.user,
+        "user": request.user
     }
     if context["user"]["is_pengguna"]:
         return HttpResponse("Unauthorized", status=401)
