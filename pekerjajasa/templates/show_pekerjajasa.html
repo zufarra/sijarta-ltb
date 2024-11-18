@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<title>MyPay</title>
+{% endblock meta %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mt-4">
+<div class="border rounded p-2 mt-3 mb-3">
+    <div class="container text-center">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2 mb-1">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" id="kategori" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Kategori
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#" id="kategori">Home Cleaning</a></li>
+                  <li><a class="dropdown-item" href="#" id="kategori">Massage</a></li>
+                </ul>
+              </div>              
+          </div>
+          <div class="col-md-auto mb-1">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Subkategori
+                </button>
+                <ul class="dropdown-menu" id="subkategori">
+                  <!-- <li><a class="dropdown-item" href="#">Action</a></li> -->
+                </ul>
+              </div>
+              
+          </div>
+          <div class="col col-lg-2">
+            <button type="button" class="btn btn-primary text-white w-100">Search</button>
+          </div>
+        </div>
+    </div>
+    </div>
+    <div class="border rounded p-3" id="state">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Pembersihan Dapur</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Nama</p>
+                <p class="d-flex" style="flex:0 0 80%">: Violet</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pemesanan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 18 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pekerjaan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 19 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Total Biaya</p>
+                <p class="d-flex" style="flex:0 0 80%">: Rp25.000</p>
+              </div>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+                <h5>Setrika</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Nama</p>
+                <p class="d-flex" style="flex:0 0 80%">: Powder</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pemesanan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 23 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pekerjaan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 24 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Total Biaya</p>
+                <p class="d-flex" style="flex:0 0 80%">: Rp990.000</p>
+              </div>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+                <h5>Daily Cleaning</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Nama</p>
+                <p class="d-flex" style="flex:0 0 80%">: Maddie</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pemesanan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 25 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Tanggal Pekerjaan</p>
+                <p class="d-flex" style="flex:0 0 80%">: 27 Oktober 2024</p>
+              </div>
+              <div class="d-flex">
+                <p class="d-flex" style="flex:0 0 20%">Total Biaya</p>
+                <p class="d-flex" style="flex:0 0 80%">: Rp500.000</p>
+              </div>
+              <a href="#" class="btn btn-primary">Kerjakan sekarang</a>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const kategoris = document.querySelectorAll('#kategori');
+        const kategoritr = document.getElementById('subkategori');
+        const kategori = document.getElementById('kategori')
+        let state = ``;
+        const state_1 = `
+        <li><a class="dropdown-item" href="#">Setrika</a></li>
+        <li><a class="dropdown-item" href="#">Daily Cleaning</a></li>
+        <li><a class="dropdown-item" href="#">Pembersihan Dapur</a></li>`;
+        const state_2 = ``;
+        
+        kategoris.forEach(item => {
+            item.addEventListener('click', function () {
+                const category = this.textContent.trim();
+                switch (category) {
+                    case 'Home Cleaning':
+                        state = state_1;
+                        break;
+                    case 'Massage':
+                        state = state_2;
+                        break;
+                    default:
+                        state = ``;
+                        break;
+                }
+                kategoritr.innerHTML = `${state}`;
+                kategori.innerHTML = `${category}`;
+            });
+        });
+    });
+</script>
+{% endblock content %}
