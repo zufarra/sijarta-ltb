@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block meta %}
+    <title>Homepage</title>
+{% endblock meta %}
+{% block content %}
+    {% include 'navbar.html' %}
+    <div class="container-fluid bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Temukan Jasa Terbaik untuk Anda</h1>
+            <p class="lead">Kami menyediakan berbagai layanan profesional sesuai kebutuhan Anda.</p>
+        </div>
+    </div>
+
+    <div id="kategori-section" class="container mt-5">
+        <h2 class="text-center mb-4">Cari Kategori dan Subkategori Jasa</h2>
+        
+        <br>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <label class="input-group-text" for="kategori-dropdown">Kategori</label>
+                    <select class="form-select" id="kategori-dropdown">
+                        <option selected>Pilih Kategori...</option>
+                        <option value="1">Perbaikan Elektronik</option>
+                        <option value="2">Perawatan Rumah Tangga</option>
+                        <option value="3">Jasa Pengiriman</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-subkategori" placeholder="Cari Nama Subkategori">
+                    <button class="btn btn-primary" type="button" id="search-btn">Search</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <br>
+
+    <div class="accordion container" id="kategoriAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Perbaikan Elektronik
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#kategoriAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <a href="{% url 'service:show_subkategori' %}" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Reparasi Televisi</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Reparasi Kulkas</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Reparasi Mesin Cuci</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Perawatan Rumah Tangga
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#kategoriAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Pembersihan Karpet</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Jasa Cuci Sofa</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Pembersihan Kamar Mandi</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Jasa Pengiriman
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#kategoriAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Pengiriman Barang</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Pengiriman Makanan</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <a href="#" class="clickable-box">
+                                <div class="card text-center p-3">
+                                    <h5>Pengiriman Dokumen</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .clickable-box {
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.3s ease-in-out, background-color 0.3s, box-shadow 0.3s;
+    }
+    .clickable-box:hover {
+        transform: scale(1.05);
+        background-color: #f0f8ff; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+    }
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .card h5 {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .card:hover h5 {
+        color: #0056b3;
+    }
+</style>
+{% endblock %}
