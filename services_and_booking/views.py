@@ -4,14 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 def show_homepage(request):
     context = {
-        "user": {
-            "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
-            "email": "johndoe@mail.com",
-            "phone": "123-456-7890",
-            "address": "1234 Elm St",
-        }
+        "user": request.user,
     }
 
     return render(request, "homepage.html", context)
