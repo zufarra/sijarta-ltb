@@ -7,6 +7,9 @@ class AuthorizationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path.startswith("/__reload__"):
+            return self.get_response(request)
+
         user = self.authenticate_user(request)
 
         exempt_urls = [
