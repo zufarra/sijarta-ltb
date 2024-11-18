@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand mb-0 h1" href="/">SIJARTA by LTB</a>
+    <a class="navbar-brand mb-0 h1" href="{% url 'service:show_homepage' %}"
+      >SIJARTA by LTB</a
+    >
     <button
       class="navbar-toggler"
       type="button"
@@ -17,7 +19,6 @@
         <button
           class="btn btn-ghost"
           type="button"
-          data-bs-toggle="dropdown"
           aria-expanded="false"
           id="themeBtn"
           onclick="colorMode()"
@@ -43,16 +44,20 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <!-- Navbar for Pengguna (Customer) -->
         <li class="nav-item">
-          <a class="nav-link" href="">Homepage</a>
+          <a class="nav-link" href="{% url 'service:show_homepage' %}"
+            >Homepage</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">MyPay</a>
+          <a class="nav-link" href="{% url 'mypay:mypay_view' %}">MyPay</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Kelola Pesanan Saya</a>
+          <a class="nav-link" href="{% url 'service:show_booking_view' %}"
+            >Kelola Pesanan Saya</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Diskon</a>
+          <a class="nav-link" href="{% url 'diskon:show_diskon' %}">Diskon</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'user:show_profile' %}">Profile</a>
@@ -66,19 +71,25 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <!-- Navbar for Pekerja (Worker) -->
         <li class="nav-item">
-          <a class="nav-link" href="">Homepage</a>
+          <a class="nav-link" href="{% url 'service:show_homepage' %}"
+            >Homepage</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Kelola Pekerjaan Saya</a>
+          <a class="nav-link" href="{% url 'mypay:mypay_view' %}">MyPay</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Kelola Status Pekerjaan</a>
+          <a class="nav-link" href="{% url 'pekerjajasa:pekerjajasa_view' %}"
+            >Kelola Pekerjaan Saya</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">MyPay</a>
+          <a class="nav-link" href="{% url 'pekerjajasa:status_view' %}"
+            >Kelola Status Pekerjaan</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Profile</a>
+          <a class="nav-link" href="{% url 'user:show_profile' %}">Profile</a>
         </li>
       </ul>
       <div class="d-flex gap-3">
