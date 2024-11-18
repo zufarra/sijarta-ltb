@@ -1,10 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 # Create your views here.
 
 
 def show_landing(request):
-    return render(request, "show_landing.html")
+    context = {
+        "user": request.user,
+    }
+    if not context["user"]["is_authenticated"]:
+        return render(request, "show_landing.html")
+
+    return redirect("service:show_homepage")
 
 
 def show_profile(request):

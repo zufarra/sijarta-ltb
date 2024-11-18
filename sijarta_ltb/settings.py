@@ -61,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "sijarta_ltb.middleware.authorization.AuthorizationMiddleware",
 ]
 
 ROOT_URLCONF = "sijarta_ltb.urls"
