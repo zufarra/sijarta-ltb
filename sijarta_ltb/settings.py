@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "users",
     "diskon",
+    "services_and_booking",
 ]
 
 MIDDLEWARE = [
