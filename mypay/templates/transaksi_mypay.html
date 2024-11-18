@@ -1,40 +1,45 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block meta %}
-<title>Transaksi</title>
+    <title>Transaksi</title>
 {% endblock meta %}
 {% block content %}
-{% include 'navbar.html' %}
-<div class="container mt-4">
-
-    <div class="border rounded mb-3">
-        <div class="container mt-4">
-            <div class="d-flex justify-content-between">
-                <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">John Doe</div>
-                <div class="p-2 border rounded">{% now "d-m-Y" %}</div>
+    {% include 'navbar.html' %}
+    <div class="container mt-4">
+        <div class="border rounded mb-3">
+            <div class="container mt-4">
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">John Doe</div>
+                    <div class="p-2 border rounded">{% now "d-m-Y" %}</div>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">Saldo: Rp8.000.000</div>
+                </div>
+                <div class="dropdown mb-3">
+                    <button class="btn btn-success dropdown-toggle"
+                            id="kategori_transaksi"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">Kategori Transaksi</button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#">TopUp MyPay</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Bayar Transaksi</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Transfer MyPay</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Withdrawal</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="d-flex justify-content-between mb-3">
-                <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">Saldo: Rp8.000.000</div>
-            </div>
-            <div class="dropdown mb-3" >
-                <button class="btn btn-success dropdown-toggle" id="kategori_transaksi" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Kategori Transaksi
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">TopUp MyPay</a></li>
-                  <li><a class="dropdown-item" href="#">Bayar Transaksi</a></li>
-                  <li><a class="dropdown-item" href="#">Transfer MyPay</a></li>
-                  <li><a class="dropdown-item" href="#">Withdrawal</a></li>
-                </ul>
-              </div>
         </div>
-    </div>
-        
-    <div class="border rounded p-3" id="state">
-        
-    </div>
-
-    <script>
+        <div class="border rounded p-3" id="state"></div>
+        <script>
         document.addEventListener('DOMContentLoaded', function () {
             const dropdownItems = document.querySelectorAll('.dropdown-item');
             const stateDiv = document.getElementById('state');
@@ -85,7 +90,7 @@
           </form>`;
 
             const state_4 = `<form>
-            <div class="dropdown mb-3" >
+            <div class="dropdown mb-3">
                 <button class="btn btn-success dropdown-toggle" id="kategori_transaksi" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Nama Bank
                 </button>
@@ -132,6 +137,6 @@
                 });
             });
         });
-    </script>
-    
-{% endblock content %}
+        </script>
+    {% endblock content %}
+
