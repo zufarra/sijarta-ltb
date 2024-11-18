@@ -22,7 +22,9 @@
                 </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">TopUp MyPay</a></li>
+                  {% if user.is_pengguna %}
                   <li><a class="dropdown-item" href="#">Bayar Transaksi</a></li>
+                  {% endif %}
                   <li><a class="dropdown-item" href="#">Transfer MyPay</a></li>
                   <li><a class="dropdown-item" href="#">Withdrawal</a></li>
                 </ul>
