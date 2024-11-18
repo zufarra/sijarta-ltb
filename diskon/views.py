@@ -2,16 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
+
 def show_diskon(request):
     context = {
-        "user": {
-            "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
-            "email": "johndoe@mail.com",
-            "phone": "123-456-7890",
-            "address": "1234 Elm St",
-        },
+        "user": request.user,
         "Voucher": [
             {
                 "Kode": "ABC123",
@@ -36,22 +30,12 @@ def show_diskon(request):
                 "Jumlah_Hari_Berlaku": 45,
                 "Kuota_Penggunaan": 80,
                 "Harga": 60000,
-            }
+            },
         ],
-
         "Promo": [
-            {
-                "Kode": "PROMO123",
-                "Tanggal_Akhir_Berlaku": "2024-12-31"
-            },
-            {
-                "Kode": "PROMO456",
-                "Tanggal_Akhir_Berlaku": "2024-11-30"
-            },
-            {
-                "Kode": "PROMO789",
-                "Tanggal_Akhir_Berlaku": "2025-01-15"
-            }
-        ]
+            {"Kode": "PROMO123", "Tanggal_Akhir_Berlaku": "2024-12-31"},
+            {"Kode": "PROMO456", "Tanggal_Akhir_Berlaku": "2024-11-30"},
+            {"Kode": "PROMO789", "Tanggal_Akhir_Berlaku": "2025-01-15"},
+        ],
     }
     return render(request, "show_diskon.html", context)
