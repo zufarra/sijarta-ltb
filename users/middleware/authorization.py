@@ -17,7 +17,7 @@ class AuthorizationMiddleware:
         exempt_urls = [
             reverse("user:show_landing"),
             reverse("user:show_login"),
-            reverse("user:show_register"),
+            reverse("user:register"),
         ]
 
         if not user["is_authenticated"] and request.path not in exempt_urls:
@@ -28,30 +28,25 @@ class AuthorizationMiddleware:
         return self.get_response(request)
 
     def authenticate_user(self, request):
-        return {
-            "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
-            "email": "johndoe@mail.com",
-            "phone": "123-456-7890",
-            "address": "1234 Elm St",
-            "gender": "Male",
-            "level": "Gold",
-            "birthdate": "1990-01-01",
-            "balance": 5000000,
-            "bank": "GoPay",
-            "account_number": "1234567890",
-            "npwp": "1234567890",
-            "rating": 9.5,
-        }
+        token = request.headers.get("Authorization")
+        if token:
+            token = token.split(" ")[1]
+            user_id, username = self.verify_jwt(token)
 
-    def get_user_from_db(self):
-        sql = """
-            SELECT * FROM sijarta.user;
-        """
+            if user_id:
+                return self.get_user_from_db(user_id, username)
+
+        return {"is_authenticated": False}
+
+    def get_user_from_db(self, user_id, username):
+        sql = "SELECT * FROM sijarta.user WHERE id = %s AND name = %s"
 
         with connection.cursor() as cursor:
-            cursor.execute(sql)
-            row = cursor.fetchall()
+            cursor.execute(sql, [user_id, username])
+            row = cursor.fetchone()
 
-        return row
+        print(row)
+
+        if row:
+            return {"is_authenticated": True, "id": row[0], "name": row[1]}
+        return {"is_authenticated": False}

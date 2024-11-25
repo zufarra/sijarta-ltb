@@ -41,7 +41,7 @@
                              role="tabpanel"
                              aria-labelledby="pengguna-form-tab"
                              tabindex="0">
-                            <form class="card-body">
+                            <form class="card-body" method="post">
                                 {% include 'register_pengguna_form.html' %}
                             </form>
                         </div>
@@ -50,13 +50,9 @@
                              role="tabpanel"
                              aria-labelledby="pekerja-form-tab"
                              tabindex="0">
-                            <form class="card-body">
-                                {% include 'register_pekerja_form.html' %}
+                            <form class="card-body" method="post" {% include 'register_pekerja_form.html' %}
                             </form>
                         </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-success">Register</button>
                     </div>
                 </div>
             </div>
