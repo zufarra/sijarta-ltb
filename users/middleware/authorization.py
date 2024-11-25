@@ -1,8 +1,10 @@
+from django.db import connection
 from django.shortcuts import redirect
 from django.urls import reverse
 
 
 class AuthorizationMiddleware:
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -42,3 +44,14 @@ class AuthorizationMiddleware:
             "npwp": "1234567890",
             "rating": 9.5,
         }
+
+    def get_user_from_db(self):
+        sql = """
+            SELECT * FROM sijarta.user;
+        """
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+            row = cursor.fetchall()
+
+        return row
