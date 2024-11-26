@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib.auth.hashers import check_password, make_password
 
-from db.utils.query_helpers import execute_query, fetch_all, fetch_one
+from db.utils.query_helpers import execute_query, fetch_dict_all, fetch_dict_one
 
 
 class UserService:
@@ -16,7 +16,7 @@ class UserService:
         LEFT JOIN sijarta.pekerja ON sijarta.user.id = sijarta.pekerja.id;
         """
 
-        return fetch_all(sql)
+        return fetch_dict_all(sql)
 
     @staticmethod
     def get_user_by_id(user_id: uuid.UUID):
@@ -28,7 +28,7 @@ class UserService:
         WHERE sijarta.user.id = %s;
         """
 
-        result = fetch_one(sql, [user_id])
+        result = fetch_dict_one(sql, [user_id])
         if not result:
             return None
 
@@ -51,7 +51,7 @@ class UserService:
         WHERE no_hp = %s;
         """
 
-        result = fetch_one(sql, [phone_number])
+        result = fetch_dict_one(sql, [phone_number])
         if not result:
             return None
 
@@ -129,7 +129,7 @@ class UserService:
         """
 
         hashed_password = UserService.hash_password(password)
-        execute_query(
+        cursor = execute_query(
             sql,
             [
                 id,

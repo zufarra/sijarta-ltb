@@ -38,7 +38,6 @@ def show_login(request):
         password = request.POST["password"]
 
         user = UserService.get_user_by_phone_number(phone_number)
-        print(user)
         if not user:
             return JsonResponse({"message": "User not found"}, status=404)
 
