@@ -44,7 +44,6 @@ def register(request):
             # Register pengguna
             pengguna_form = PenggunaRegistrationForm(request.POST)
             if not pengguna_form.is_valid():
-                print(pengguna_form.errors)
                 return render(
                     request,
                     "show_register.html",
