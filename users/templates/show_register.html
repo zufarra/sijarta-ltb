@@ -43,6 +43,9 @@
                              tabindex="0">
                             <form class="card-body" method="post">
                                 {% include 'register_pengguna_form.html' %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success">Register</button>
+                                </div>
                             </form>
                         </div>
                         <div class="tab-pane fade {% if show_pekerja %}show active{% endif %}"
@@ -52,6 +55,9 @@
                              tabindex="0">
                             <form class="card-body" method="post">
                                 {% include 'register_pekerja_form.html' %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success">Register</button>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -60,7 +60,7 @@ class PenggunaRegistrationForm(forms.Form):
         widget=forms.PasswordInput(),
     )
     gender = forms.ChoiceField(
-        choices=[("M", "Male"), ("F", "Female")],
+        choices=[("L", "Laki-laki"), ("P", "Perempuan")],
         required=True,
         widget=forms.RadioSelect(),
     )

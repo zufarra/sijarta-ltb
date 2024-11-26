@@ -22,8 +22,13 @@ def show_landing(request):
 
 # @only_pengguna, as an example: only_pengguna is a decorator that checks if the user is authenticated and a pengguna.
 def show_profile(request):
+    pengguna_form = PenggunaRegistrationForm(request.user)
+    pekerja_form = PekerjaRegistrationForm(request.user)
+
     context = {
         "user": request.user,
+        "pengguna_form": pengguna_form,
+        "pekerja_form": pekerja_form,
     }
 
     return render(request, "show_profile.html", context)
