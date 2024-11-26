@@ -6,14 +6,33 @@ from db.utils.query_helpers import execute_query, fetch_dict_all, fetch_dict_one
 
 
 class UserService:
+    USER_FIELDS = """
+        U.id as id,
+        U.nama as name,
+        U.jenis_kelamin as gender,
+        U.no_hp as phone_number,
+        U.pwd as password_hash,
+        U.tgl_lahir as birthdate,
+        U.alamat as address,
+        U.saldo_mypay as mypay_balance,
+        P.level as level,
+        PE.nama_bank as bank_name,
+        PE.nomor_rekening as bank_account_number,
+        PE.npwp as npwp,
+        PE.link_foto as photo_url,
+        PE.rating as rating,
+        PE.jml_pesanan_selesai as jml_pesanan_selesai
+    """
 
     @staticmethod
     def get_all_users():
         """Gets all users from the database."""
-        sql = """
-        SELECT * FROM sijarta.user
-        LEFT JOIN sijarta.pelanggan ON sijarta.user.id = sijarta.pelanggan.id
-        LEFT JOIN sijarta.pekerja ON sijarta.user.id = sijarta.pekerja.id;
+        sql = f"""
+        SELECT
+            {UserService.USER_FIELDS}
+        FROM sijarta.user U
+        LEFT JOIN sijarta.pelanggan P ON U.id = P.id
+        LEFT JOIN sijarta.pekerja PE ON U.id = PE.id;
         """
 
         return fetch_dict_all(sql)
@@ -21,11 +40,13 @@ class UserService:
     @staticmethod
     def get_user_by_id(user_id: uuid.UUID):
         """Gets a user by ID from the database"""
-        sql = """
-        SELECT * FROM sijarta.user
-        NATURAL LEFT JOIN sijarta.pelanggan
-        NATURAL LEFT JOIN sijarta.pekerja
-        WHERE sijarta.user.id = %s;
+        sql = f"""
+        SELECT 
+            {UserService.USER_FIELDS}
+        FROM sijarta.user U
+        LEFT JOIN sijarta.pelanggan P ON U.id = P.id
+        LEFT JOIN sijarta.pekerja PE ON U.id = PE.id
+        WHERE U.id = %s;
         """
 
         result = fetch_dict_one(sql, [user_id])
@@ -44,11 +65,13 @@ class UserService:
     @staticmethod
     def get_user_by_phone_number(phone_number: str) -> dict:
         """Gets a user by phone number from the database."""
-        sql = """
-        SELECT * FROM sijarta.user
-        NATURAL LEFT JOIN sijarta.pelanggan
-        NATURAL LEFT JOIN sijarta.pekerja
-        WHERE no_hp = %s;
+        sql = f"""
+        SELECT
+            {UserService.USER_FIELDS}
+        FROM sijarta.user U
+        LEFT JOIN sijarta.pelanggan P ON U.id = P.id
+        LEFT JOIN sijarta.pekerja PE ON U.id = PE.id
+        WHERE U.no_hp = %s;
         """
 
         result = fetch_dict_one(sql, [phone_number])
@@ -129,7 +152,7 @@ class UserService:
         """
 
         hashed_password = UserService.hash_password(password)
-        cursor = execute_query(
+        execute_query(
             sql,
             [
                 id,

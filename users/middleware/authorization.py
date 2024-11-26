@@ -1,6 +1,5 @@
 import jwt
-from django.db import connection
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from users.services.user_service import UserService
@@ -25,7 +24,9 @@ class AuthorizationMiddleware:
         ]
 
         if not user["is_authenticated"] and request.path not in exempt_urls:
-            return redirect("user:show_landing")
+            response = HttpResponseRedirect(reverse("user:show_landing"))
+            response.delete_cookie("jwt")
+            return response
 
         request.user = user
         return self.get_response(request)
@@ -39,10 +40,10 @@ class AuthorizationMiddleware:
 
         try:
             user_id, _ = verify_jwt(token)
-            if user_id == "None":
+            if user_id is None or user_id == "None":
                 return user
             result = UserService.get_user_by_id(user_id)
-            if user == None:
+            if result == None:
                 user["message"] = "User not found"
                 return user
         except jwt.ExpiredSignatureError:

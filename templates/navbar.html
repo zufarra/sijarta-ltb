@@ -64,7 +64,7 @@
         </li>
       </ul>
       <div class="d-flex gap-3">
-        <span class="navbar-text">Logged in as {{ user.nama }} (Pengguna)</span>
+        <span class="navbar-text">Logged in as {{ user.name }} (Pengguna)</span>
         <a class="btn btn-danger" href="{% url 'user:logout' %}">Logout</a>
       </div>
       {% else %}
@@ -93,7 +93,7 @@
         </li>
       </ul>
       <div class="d-flex gap-3">
-        <span class="navbar-text">Logged in as {{ user.nama }} (Pekerja)</span>
+        <span class="navbar-text">Logged in as {{ user.name }} (Pekerja)</span>
         <a class="btn btn-danger" href="{% url 'user:logout' %}">Logout</a>
       </div>
       {% endif %} {% else %}

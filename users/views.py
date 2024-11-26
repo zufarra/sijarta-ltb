@@ -41,10 +41,10 @@ def show_login(request):
         if not user:
             return JsonResponse({"message": "User not found"}, status=404)
 
-        if not UserService.check_password(password, user["pwd"]):
+        if not UserService.check_password(password, user["password_hash"]):
             return JsonResponse({"message": "Invalid password"}, status=400)
 
-        token = generate_jwt(str(user["id"]), user["nama"])
+        token = generate_jwt(str(user["id"]), user["name"])
         response = HttpResponseRedirect(reverse("service:show_homepage"))
         response.set_cookie("jwt", token, httponly=True, samesite="Strict", secure=True)
 
