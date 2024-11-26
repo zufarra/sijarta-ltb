@@ -10,10 +10,17 @@ def execute_query(sql, params=None):
 def fetch_all(sql, params=None):
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
-        return cursor.fetchall()
+        columns = [col[0] for col in cursor.description]
+        return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
 def fetch_one(sql, params=None):
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
-        return cursor.fetchone()
+        row = cursor.fetchone()
+        if row:
+            columns = [col[0] for col in cursor.description]
+            print(columns)
+            print(row)
+            return dict(zip(columns, row))
+        return None

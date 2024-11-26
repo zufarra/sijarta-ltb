@@ -23,7 +23,6 @@ def show_profile(request):
     context = {
         "user": request.user,
     }
-    print(context)
 
     return render(request, "show_profile.html", context)
 
@@ -39,6 +38,7 @@ def show_login(request):
         password = request.POST["password"]
 
         user = UserService.get_user_by_phone_number(phone_number)
+        print(user)
         if not user:
             return JsonResponse({"message": "User not found"}, status=404)
 
@@ -157,3 +157,9 @@ def register(request):
         "show_register.html",
         {"pengguna_form": pengguna_form, "pekerja_form": pekerja_form},
     )
+
+
+def logout(request):
+    response = HttpResponseRedirect(reverse("user:show_landing"))
+    response.delete_cookie("jwt")
+    return response
