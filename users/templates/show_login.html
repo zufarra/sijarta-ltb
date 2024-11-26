@@ -11,6 +11,7 @@
                 <div class="card">
                     <h5 class="card-header">Login to your account!</h5>
                     <form class="card-body">
+                        {% csrf_token %}
                         <div class="mb-3 form-floating">
                             {{ form.phone_number }}
                             <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>

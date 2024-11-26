@@ -14,13 +14,21 @@ class UserLoginForm(forms.Form):
         min_length=10,
         max_length=15,
         required=True,
+        widget=forms.TextInput(attrs={"placeholder": "Phone Number"}),
     )
 
     password = forms.CharField(
         min_length=8,
         max_length=254,
         required=True,
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"}),
     )
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data["phone_number"]
+        if not phone_number.isdigit():
+            raise forms.ValidationError("Phone number must only contain numbers")
+        return phone_number
 
 
 class PenggunaRegistrationForm(forms.Form):
@@ -49,6 +57,7 @@ class PenggunaRegistrationForm(forms.Form):
         min_length=8,
         max_length=254,
         required=True,
+        widget=forms.PasswordInput(),
     )
     gender = forms.ChoiceField(
         choices=[("M", "Male"), ("F", "Female")],
