@@ -10,10 +10,15 @@ class PenggunaRegistrationForm(forms.Form):
 
         for field in self.fields:
             if field == "gender":
-                self.apply_classes(field, "form-check-input")
+                self.apply_classes(
+                    field,
+                    f"form-check-input {'is-invalid' if field in self.errors else ''}",
+                )
                 continue
 
-            self.apply_classes(field, "form-control")
+            self.apply_classes(
+                field, f"form-control {'is-invalid' if field in self.errors else ''}"
+            )
 
     name = forms.CharField(
         min_length=2,
@@ -82,14 +87,21 @@ class PekerjaRegistrationForm(PenggunaRegistrationForm):
         self.update_ids("pekerja")
         for field in self.fields:
             if field == "gender":
-                self.apply_classes(field, "form-check-input")
+                self.apply_classes(
+                    field,
+                    f"form-check-input {'is-invalid' if field in self.errors else ''}",
+                )
                 continue
 
             if field == "bank_name":
-                self.apply_classes(field, "form-select")
+                self.apply_classes(
+                    field, f"form-select {'is-invalid' if field in self.errors else ''}"
+                )
                 continue
 
-            self.apply_classes(field, "form-control")
+            self.apply_classes(
+                field, f"form-control {'is-invalid' if field in self.errors else ''}"
+            )
 
     bank_name = forms.ChoiceField(
         choices=[

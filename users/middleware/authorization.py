@@ -45,8 +45,6 @@ class AuthorizationMiddleware:
             cursor.execute(sql, [user_id, username])
             row = cursor.fetchone()
 
-        print(row)
-
         if row:
             return {"is_authenticated": True, "id": row[0], "name": row[1]}
         return {"is_authenticated": False}

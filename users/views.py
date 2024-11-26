@@ -44,6 +44,7 @@ def register(request):
             # Register pengguna
             pengguna_form = PenggunaRegistrationForm(request.POST)
             if not pengguna_form.is_valid():
+                print(pengguna_form.errors)
                 return render(
                     request,
                     "show_register.html",
@@ -65,19 +66,16 @@ def register(request):
 
             gender = "L" if gender == "M" else "P"
 
-            try:
-                UserService.create_pengguna(
-                    name, password, gender, phone_number, birthdate, address
-                )
+            UserService.create_pengguna(
+                name, password, gender, phone_number, birthdate, address
+            )
 
-                user = UserService.get_user_by_phone_number(phone_number)
-                token = generate_jwt(user["id"], user["nama"])
+            user = UserService.get_user_by_phone_number(phone_number)
+            token = generate_jwt(str(user["id"]), user["nama"])
 
-                return JsonResponse(
-                    {"message": "Registration successful", "token": token}, status=201
-                )
-            except Exception as e:
-                return JsonResponse({"message": str(e)}, status=500)
+            return JsonResponse(
+                {"message": "Registration successful", "token": token}, status=201
+            )
         elif request.POST["user_type"] == "pekerja":
             # Register pekerja
             pekerja_form = PekerjaRegistrationForm(request.POST)

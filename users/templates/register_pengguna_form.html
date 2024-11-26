@@ -3,13 +3,27 @@
 <div class="row mb-3">
     <label for="{{ pengguna_form.name.id_for_label }}"
            class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">{{ pengguna_form.name }}</div>
+    <div class="col-sm-10">
+        {{ pengguna_form.name }}
+        {% if pengguna_form.name.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.name.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 <!-- Password Field -->
 <div class="row mb-3">
     <label for="{{ pengguna_form.password.id_for_label }}"
            class="col-sm-2 col-form-label">Password</label>
-    <div class="col-sm-10">{{ pengguna_form.password }}</div>
+    <div class="col-sm-10">
+        {{ pengguna_form.password }}
+        {% if pengguna_form.password.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.password.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 <!-- Gender Radio Group -->
 <fieldset class="row mb-3">
@@ -21,25 +35,51 @@
                 <label class="form-check-label" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
             </div>
         {% endfor %}
+        {% if pengguna_form.gender.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.gender.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
     </div>
 </fieldset>
 <!-- Phone Number Field -->
 <div class="mb-3 row">
     <label for="{{ pengguna_form.phone_number.id_for_label }}"
            class="col-sm-2 col-form-label">Phone Number</label>
-    <div class="col-sm-10">{{ pengguna_form.phone_number }}</div>
+    <div class="col-sm-10">
+        {{ pengguna_form.phone_number }}
+        {% if pengguna_form.phone_number.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.phone_number.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 <!-- Birthdate Field -->
 <div class="mb-3 row">
     <label for="{{ pengguna_form.birthdate.id_for_label }}"
            class="col-sm-2 col-form-label">Birthdate</label>
-    <div class="col-sm-10">{{ pengguna_form.birthdate }}</div>
+    <div class="col-sm-10">
+        {{ pengguna_form.birthdate }}
+        {% if pengguna_form.birthdate.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.birthdate.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 <!-- Address Field -->
 <div class="mb-3 row">
     <label for="{{ pengguna_form.address.id_for_label }}"
            class="col-form-label col-sm-2">Address</label>
-    <div class="col-sm-10">{{ pengguna_form.address }}</div>
+    <div class="col-sm-10">
+        {{ pengguna_form.address }}
+        {% if pengguna_form.address.errors %}
+            <div class="invalid-feedback">
+                {% for error in pengguna_form.address.errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 <input type="hidden" name="user_type" value="pengguna" />
 <div class="d-flex justify-content-center">
