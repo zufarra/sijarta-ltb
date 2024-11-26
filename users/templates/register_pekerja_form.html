@@ -1,156 +1,98 @@
+{% load forms %} {% csrf_token %}
 <!-- Name Field -->
 <div class="row mb-3">
-  <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-  <div class="col-sm-10">
-    <input
-      type="text"
-      name="name"
-      class="form-control"
-      id="inputName"
-      required
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.name.id_for_label }}"
+    class="col-sm-2 col-form-label"
+    >Name</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.name }}</div>
 </div>
 <!-- Password Field -->
 <div class="row mb-3">
-  <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-  <div class="col-sm-10">
-    <input
-      type="password"
-      name="password"
-      class="form-control"
-      id="inputPassword"
-      autocomplete="new-password"
-      required
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.password.id_for_label }}"
+    class="col-sm-2 col-form-label"
+    >Password</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.password }}</div>
 </div>
 <!-- Gender Radio Group -->
 <fieldset class="row mb-3">
   <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
   <div class="col-sm-10">
+    {% for radio in pekerja_form.gender %}
     <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="gender"
-        id="maleRadioPekerja"
-        value="Male"
-        checked
-      />
-      <label class="form-check-label" for="maleRadioPekerja">Male</label>
+      {{ radio.tag }}
+      <label class="form-check-label" for="{{ radio.id_for_label }}"
+        >{{ radio.choice_label }}</label
+      >
     </div>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="gender"
-        id="femaleRadioPekerja"
-        value="Female"
-      />
-      <label class="form-check-label" for="femaleRadioPekerja">Female</label>
-    </div>
+    {% endfor %}
   </div>
 </fieldset>
 <!-- Phone Number Field -->
 <div class="mb-3 row">
-  <label for="inputTel" class="col-sm-2 col-form-label">Phone Number</label>
-  <div class="col-sm-10">
-    <input
-      type="tel"
-      name="phone"
-      class="form-control"
-      id="inputTel"
-      placeholder="0XXXXXXXX"
-      pattern="^0?8\d{7,12}$"
-      required
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.phone_number.id_for_label }}"
+    class="col-sm-2 col-form-label"
+    >Phone Number</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.phone_number }}</div>
 </div>
 <!-- Birthdate Field -->
 <div class="mb-3 row">
-  <label for="inputBirthdate" class="col-sm-2 col-form-label">Birthdate</label>
-  <div class="col-sm-10">
-    <input
-      type="date"
-      name="birthdate"
-      class="form-control"
-      id="inputBirthdate"
-      required
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.birthdate.id_for_label }}"
+    class="col-sm-2 col-form-label"
+    >Birthdate</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.birthdate }}</div>
 </div>
 <!-- Address Field -->
 <div class="mb-3 row">
-  <label for="inputAddress" class="col-form-label col-sm-2">Address</label>
-  <div class="col-sm-10">
-    <input
-      type="text"
-      name="address"
-      class="form-control"
-      id="inputAddress"
-      placeholder="1234 Main St"
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.address.id_for_label }}"
+    class="col-form-label col-sm-2"
+    >Address</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.address }}</div>
 </div>
 <!-- Bank Name Select -->
 <div class="mb-3 row">
-  <label for="inputBankName" class="col-form-label col-sm-2">Bank Name</label>
-  <div class="col-sm-10">
-    <select class="form-select" id="inputBankName" name="bank_name" required>
-      <option value="">Choose a bank name</option>
-      <option value="GoPay">GoPay</option>
-      <option value="OVO">OVO</option>
-      <option value="VA_BCA">Virtual Account BCA</option>
-      <option value="VA_BNI">Virtual Account BNI</option>
-      <option value="VA_Mandiri">Virtual Account Mandiri</option>
-    </select>
-  </div>
+  <label
+    for="{{ pekerja_form.bank_name.id_for_label }}"
+    class="col-form-label col-sm-2"
+    >Bank Name</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.bank_name }}</div>
 </div>
 <!-- Bank Account Field -->
 <div class="mb-3 row">
-  <label for="inputBankAccount" class="col-form-label col-sm-2"
+  <label
+    for="{{ pekerja_form.bank_account_number.id_for_label }}"
+    class="col-form-label col-sm-2"
     >Bank Account</label
   >
-  <div class="col-sm-10">
-    <input
-      type="text"
-      name="bank_account"
-      class="form-control"
-      id="inputBankAccount"
-      pattern="\d{10,}"
-      placeholder="1234567890"
-      required
-    />
-  </div>
+  <div class="col-sm-10">{{ pekerja_form.bank_account_number }}</div>
 </div>
 <!-- NPWP Field -->
 <div class="mb-3 row">
-  <label for="inputNPWP" class="col-form-label col-sm-2">NPWP</label>
-  <div class="col-sm-10">
-    <input
-      type="text"
-      name="npwp"
-      class="form-control"
-      id="inputNPWP"
-      pattern="\d{10,}"
-      placeholder="1234567890"
-      required
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.npwp.id_for_label }}"
+    class="col-form-label col-sm-2"
+    >NPWP</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.npwp }}</div>
 </div>
 <!-- Photo URL Field -->
 <div class="mb-3 row">
-  <label for="inputPhotoURL" class="col-form-label col-sm-2">Photo URL</label>
-  <div class="col-sm-10">
-    <input
-      type="url"
-      name="photo_url"
-      class="form-control"
-      id="inputPhotoURL"
-      placeholder="https://example.com/photo.jpg"
-    />
-  </div>
+  <label
+    for="{{ pekerja_form.photo_url.id_for_label }}"
+    class="col-form-label col-sm-2"
+    >Photo URL</label
+  >
+  <div class="col-sm-10">{{ pekerja_form.photo_url }}</div>
 </div>
 <input type="hidden" name="user_type" value="pekerja" />
 <div class="d-flex justify-content-center">
