@@ -102,8 +102,8 @@ class PekerjaRegistrationForm(PenggunaRegistrationForm):
         required=True,
         widget=forms.Select(),
     )
-    bank_account_number = forms.CharField(min_length=10, max_length=15, required=True)
-    npwp = forms.CharField(min_length=15, max_length=15, required=True)
+    bank_account_number = forms.CharField(min_length=10, max_length=20, required=True)
+    npwp = forms.CharField(min_length=15, max_length=20, required=True)
     photo_url = forms.URLField(required=True)
 
     def clean_bank_account(self):

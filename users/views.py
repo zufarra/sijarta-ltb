@@ -34,7 +34,6 @@ def show_login(request):
     return render(request, "show_login.html", context)
 
 
-@csrf_exempt
 def register(request):
     pengguna_form = PenggunaRegistrationForm()
     pekerja_form = PekerjaRegistrationForm()
@@ -49,6 +48,7 @@ def register(request):
                     "show_register.html",
                     {"pengguna_form": pengguna_form, "pekerja_form": pekerja_form},
                 )
+
             name = request.POST["name"]
             password = request.POST["password"]
             gender = request.POST["gender"]

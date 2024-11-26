@@ -8,7 +8,9 @@ class Command(BaseCommand):
     help = "Apply raw SQL migrations from the migrations folder."
 
     def handle(self, *args, **kwargs):
-        migrations_dir = os.path.join(os.path.dirname(__file__), "../../../migrations")
+        migrations_dir = os.path.join(
+            os.path.dirname(__file__), "../../../db/migrations"
+        )
         applied_migrations = self.get_applied_migrations()
 
         for file in sorted(os.listdir(migrations_dir)):
