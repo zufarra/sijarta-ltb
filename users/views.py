@@ -3,22 +3,24 @@ from django.shortcuts import redirect, render, reverse
 
 from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm, UserLoginForm
 from users.services.user_service import UserService
+from users.utils.decorators import only_pengguna
 from users.utils.jwt_utils import generate_jwt
 
 # Create your views here.
 
 
 def show_landing(request):
-
     context = {
         "user": request.user,
     }
+
     if not context["user"]["is_authenticated"]:
         return render(request, "show_landing.html")
 
     return redirect("service:show_homepage")
 
 
+# @only_pengguna, as an example: only_pengguna is a decorator that checks if the user is authenticated and a pengguna.
 def show_profile(request):
     context = {
         "user": request.user,

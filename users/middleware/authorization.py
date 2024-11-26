@@ -10,6 +10,11 @@ class AuthorizationMiddleware:
 
     def __init__(self, get_response):
         self.get_response = get_response
+        self.exempt_urls = [
+            reverse("user:show_landing"),
+            reverse("user:show_login"),
+            reverse("user:register"),
+        ]
 
     def __call__(self, request):
         if request.path.startswith("/__reload__"):
@@ -17,13 +22,7 @@ class AuthorizationMiddleware:
 
         user = self.authenticate_user(request)
 
-        exempt_urls = [
-            reverse("user:show_landing"),
-            reverse("user:show_login"),
-            reverse("user:register"),
-        ]
-
-        if not user["is_authenticated"] and request.path not in exempt_urls:
+        if not user["is_authenticated"] and request.path not in self.exempt_urls:
             response = HttpResponseRedirect(reverse("user:show_landing"))
             response.delete_cookie("jwt")
             return response
