@@ -8,3 +8,4 @@ pillow
 django-browser-reload
 python-dotenv
 pyjwt
+bcrypt

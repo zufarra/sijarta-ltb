@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv(
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-PRODUCTION = bool(os.getenv("PRODUCTION", False))
+PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = [

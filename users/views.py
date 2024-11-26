@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 
 from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm
 from users.services.user_service import UserService
+from users.utils.jwt_utils import generate_jwt
 
 # Create your views here.
 
@@ -52,7 +53,7 @@ def register(request):
             name = request.POST["name"]
             password = request.POST["password"]
             gender = request.POST["gender"]
-            phone_number = request.POST["phone"]
+            phone_number = request.POST["phone_number"]
             birthdate = request.POST["birthdate"]
             address = request.POST["address"]
 
@@ -62,7 +63,21 @@ def register(request):
                     {"message": "Phone number already registered"}, status=400
                 )
 
-            pass
+            gender = "L" if gender == "M" else "P"
+
+            try:
+                UserService.create_pengguna(
+                    name, password, gender, phone_number, birthdate, address
+                )
+
+                user = UserService.get_user_by_phone_number(phone_number)
+                token = generate_jwt(user["id"], user["nama"])
+
+                return JsonResponse(
+                    {"message": "Registration successful", "token": token}, status=201
+                )
+            except Exception as e:
+                return JsonResponse({"message": str(e)}, status=500)
         elif request.POST["user_type"] == "pekerja":
             # Register pekerja
             pekerja_form = PekerjaRegistrationForm(request.POST)
@@ -76,7 +91,7 @@ def register(request):
             name = request.POST["name"]
             password = request.POST["password"]
             gender = request.POST["gender"]
-            phone_number = request.POST["phone"]
+            phone_number = request.POST["phone_number"]
             birthdate = request.POST["birthdate"]
             address = request.POST["address"]
             bank_name = request.POST["bank_name"]
