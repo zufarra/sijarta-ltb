@@ -34,9 +34,13 @@ class UserService:
     def create_pengguna(name, password, gender, phone_number, birthdate, address):
         """Creates a new pengguna in the database."""
         id = uuid.uuid4()
+        level = "Basic"
         sql = """
         INSERT INTO sijarta.user (id, nama, jenis_kelamin, no_hp, pwd, tgl_lahir, alamat, saldo_mypay)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, 0)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, 0);
+
+        INSERT INTO sijarta.pelanggan (id, level)
+        VALUES (%s, %s);
         """
 
         hashed_password = UserService.hash_password(password)
@@ -50,5 +54,51 @@ class UserService:
                 hashed_password.decode("utf-8"),
                 birthdate,
                 address,
+                id,
+                level,
+            ],
+        )
+
+    @staticmethod
+    def create_pekerja(
+        name,
+        password,
+        gender,
+        phone_number,
+        birthdate,
+        address,
+        bank_name,
+        bank_account_number,
+        npwp,
+        photo_url,
+    ):
+        """Creates a new pekerja in the database."""
+        id = uuid.uuid4()
+        # Untuk rating asumsi NULL jika belum ada pesanan yang diselesaikan
+        # Untuk jml_pesanan_selesai asumsi 0 jika belum ada pesanan yang diselesaikan
+        sql = """
+        INSERT INTO sijarta.user (id, nama, jenis_kelamin, no_hp, pwd, tgl_lahir, alamat, saldo_mypay)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, 0);
+
+        INSERT INTO sijarta.pekerja (id, nama_bank, nomor_rekening, npwp, link_foto, rating, jml_pesanan_selesai)
+        VALUES (%s, %s, %s, %s, %s, NULL, 0);
+        """
+
+        hashed_password = UserService.hash_password(password)
+        execute_query(
+            sql,
+            [
+                id,
+                name,
+                gender,
+                phone_number,
+                hashed_password.decode("utf-8"),
+                birthdate,
+                address,
+                id,
+                bank_name,
+                bank_account_number,
+                npwp,
+                photo_url,
             ],
         )

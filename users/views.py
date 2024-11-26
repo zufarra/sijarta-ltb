@@ -68,16 +68,16 @@ def register(request):
 
             gender = "L" if gender == "M" else "P"
 
-            UserService.create_pengguna(
-                name, password, gender, phone_number, birthdate, address
-            )
+            try:
+                UserService.create_pengguna(
+                    name, password, gender, phone_number, birthdate, address
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"message": "Failed to register user", "error": str(e)}, status=500
+                )
 
-            user = UserService.get_user_by_phone_number(phone_number)
-            token = generate_jwt(str(user["id"]), user["nama"])
-
-            return JsonResponse(
-                {"message": "Registration successful", "token": token}, status=201
-            )
+            return redirect("user:show_login")
         elif request.POST["user_type"] == "pekerja":
             # Register pekerja
             pekerja_form = PekerjaRegistrationForm(request.POST)
@@ -99,10 +99,37 @@ def register(request):
             birthdate = request.POST["birthdate"]
             address = request.POST["address"]
             bank_name = request.POST["bank_name"]
-            bank_account = request.POST["bank_account"]
+            bank_account_number = request.POST["bank_account_number"]
             npwp = request.POST["npwp"]
             photo_url = request.POST["photo_url"]
-            pass
+
+            search_phone_number = UserService.get_user_by_phone_number(phone_number)
+            if search_phone_number:
+                return JsonResponse(
+                    {"message": "Phone number already registered"}, status=400
+                )
+
+            gender = "L" if gender == "M" else "P"
+
+            try:
+                UserService.create_pekerja(
+                    name,
+                    password,
+                    gender,
+                    phone_number,
+                    birthdate,
+                    address,
+                    bank_name,
+                    bank_account_number,
+                    npwp,
+                    photo_url,
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"message": "Failed to register user", "error": str(e)}, status=500
+                )
+
+            return redirect("user:show_login")
         else:
             return JsonResponse({"message": "Invalid user type"}, status=400)
 

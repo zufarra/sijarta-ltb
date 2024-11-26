@@ -123,9 +123,3 @@ class PekerjaRegistrationForm(PenggunaRegistrationForm):
         if not bank_account.isdigit():
             raise forms.ValidationError("Bank account must only contain numbers")
         return bank_account
-
-    def clean_npwp(self):
-        npwp = self.cleaned_data["npwp"]
-        if not npwp.isdigit():
-            raise forms.ValidationError("NPWP must only contain numbers")
-        return npwp
