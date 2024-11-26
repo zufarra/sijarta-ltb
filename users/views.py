@@ -47,7 +47,10 @@ def register(request):
                 return render(
                     request,
                     "show_register.html",
-                    {"pengguna_form": pengguna_form, "pekerja_form": pekerja_form},
+                    {
+                        "pengguna_form": pengguna_form,
+                        "pekerja_form": pekerja_form,
+                    },
                 )
 
             name = request.POST["name"]
@@ -82,7 +85,11 @@ def register(request):
                 return render(
                     request,
                     "show_register.html",
-                    {"pengguna_form": pengguna_form, "pekerja_form": pekerja_form},
+                    {
+                        "pengguna_form": pengguna_form,
+                        "pekerja_form": pekerja_form,
+                        "show_pekerja": True,
+                    },
                 )
 
             name = request.POST["name"]
