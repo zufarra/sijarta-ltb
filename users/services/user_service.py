@@ -46,33 +46,33 @@ class UserService:
             return {
                 "is_pengguna": True,
                 "id": pengguna_row[0],
-                "nama": pengguna_row[1],
-                "jenis_kelamin": pengguna_row[2],
-                "no_hp": pengguna_row[3],
+                "name": pengguna_row[1],
+                "gender": pengguna_row[2],
+                "phone_number": pengguna_row[3],
                 "pwd": pengguna_row[4],
-                "tgl_lahir": pengguna_row[5],
-                "alamat": pengguna_row[6],
-                "saldo_mypay": pengguna_row[7],
+                "birthdate": pengguna_row[5],
+                "address": pengguna_row[6],
+                "mypay_balance": pengguna_row[7],
                 "level": pengguna_row[8],
             }
         elif pekerja_row:
-            pekerja_row = pekerja_row[0]
+            pekerja_row = tuple(pekerja_row[0][1:-1].split(","))
             return {
                 "is_pengguna": False,
                 "id": pekerja_row[0],
-                "nama": pekerja_row[1],
-                "jenis_kelamin": pekerja_row[2],
-                "no_hp": pekerja_row[3],
+                "name": pekerja_row[1],
+                "gender": pekerja_row[2],
+                "phone_number": pekerja_row[3],
                 "pwd": pekerja_row[4],
-                "tgl_lahir": pekerja_row[5],
-                "alamat": pekerja_row[6],
-                "saldo_mypay": pekerja_row[7],
-                "nama_bank": pekerja_row[8],
-                "nomor_rekening": pekerja_row[9],
+                "birthdate": pekerja_row[5],
+                "address": pekerja_row[6],
+                "mypay_balance": pekerja_row[7],
+                "bank_name": pekerja_row[8],
+                "bank_account_number": pekerja_row[9],
                 "npwp": pekerja_row[10],
-                "link_foto": pekerja_row[11],
+                "photo_url": pekerja_row[11],
                 "rating": pekerja_row[12],
-                "jml_pesanan_selesai": pekerja_row[13],
+                "completed_orders": pekerja_row[13],
             }
 
         return None
