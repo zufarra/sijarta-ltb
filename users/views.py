@@ -1,5 +1,5 @@
-from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render, reverse
 
 from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm, UserLoginForm
 from users.services.user_service import UserService
@@ -23,17 +23,35 @@ def show_profile(request):
     context = {
         "user": request.user,
     }
+    print(context)
 
     return render(request, "show_profile.html", context)
 
 
 def show_login(request):
     login_form = UserLoginForm()
-    context = {
-        "form": login_form,
-    }
+    if request.method == "POST":
+        login_form = UserLoginForm(request.POST)
+        if not login_form.is_valid():
+            return render(request, "show_login.html", {"form": login_form})
 
-    return render(request, "show_login.html", context)
+        phone_number = request.POST["phone_number"]
+        password = request.POST["password"]
+
+        user = UserService.get_user_by_phone_number(phone_number)
+        if not user:
+            return JsonResponse({"message": "User not found"}, status=404)
+
+        if not UserService.check_password(password, user["pwd"]):
+            return JsonResponse({"message": "Invalid password"}, status=400)
+
+        token = generate_jwt(str(user["id"]), user["nama"])
+        response = HttpResponseRedirect(reverse("service:show_homepage"))
+        response.set_cookie("jwt", token, httponly=True, samesite="Strict", secure=True)
+
+        return response
+
+    return render(request, "show_login.html", {"form": login_form})
 
 
 def register(request):

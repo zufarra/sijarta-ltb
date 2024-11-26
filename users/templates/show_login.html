@@ -10,7 +10,7 @@
             <div class="col-md-6 col-lg-8">
                 <div class="card">
                     <h5 class="card-header">Login to your account!</h5>
-                    <form class="card-body">
+                    <form class="card-body" method="post">
                         {% csrf_token %}
                         <div class="mb-3 form-floating">
                             {{ form.phone_number }}

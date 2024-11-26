@@ -1,6 +1,10 @@
+import jwt
 from django.db import connection
 from django.shortcuts import redirect
 from django.urls import reverse
+
+from users.services.user_service import UserService
+from users.utils.jwt_utils import verify_jwt
 
 
 class AuthorizationMiddleware:
@@ -24,19 +28,33 @@ class AuthorizationMiddleware:
             return redirect("user:show_landing")
 
         request.user = user
-
+        print(request.user)
         return self.get_response(request)
 
     def authenticate_user(self, request):
-        token = request.headers.get("Authorization")
-        if token:
-            token = token.split(" ")[1]
-            user_id, username = self.verify_jwt(token)
+        token = request.COOKIES.get("jwt")
+        user = {"is_authenticated": False}
 
-            if user_id:
-                return self.get_user_from_db(user_id, username)
+        if not token:
+            return {"is_authenticated": False}
 
-        return {"is_authenticated": False}
+        try:
+            user_id, _ = verify_jwt(token)
+            result = UserService.get_user_by_id(user_id)
+            if user == None:
+                user["message"] = "User not found"
+                return user
+
+            user = result
+        except jwt.ExpiredSignatureError:
+            user["message"] = "Token expired"
+            return user
+        except jwt.InvalidTokenError:
+            user["message"] = "Invalid token"
+            return user
+
+        user["is_authenticated"] = True
+        return user
 
     def get_user_from_db(self, user_id, username):
         sql = "SELECT * FROM sijarta.user WHERE id = %s AND name = %s"

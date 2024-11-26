@@ -1,12 +1,20 @@
 import uuid
 
-import bcrypt
+from django.contrib.auth.hashers import check_password, make_password
 
 from db.utils.query_helpers import execute_query, fetch_all, fetch_one
 
 
 class UserService:
-    user_columns = ["id", "nama", "jenis_kelamin", "no_hp", "tgl_lahir", "alamat"]
+    user_columns = [
+        "id",
+        "nama",
+        "jenis_kelamin",
+        "no_hp",
+        "pwd",
+        "tgl_lahir",
+        "alamat",
+    ]
 
     @staticmethod
     def get_all_users():
@@ -16,7 +24,58 @@ class UserService:
     @staticmethod
     def get_user_by_id(user_id: uuid.UUID):
         """Gets a user by ID from the database"""
-        return fetch_one("SELECT * FROM sijarta.user WHERE id = %s", [user_id])
+        pengguna_sql = """
+        SELECT (U.id, U.nama, U.jenis_kelamin, U.no_hp, U.pwd, U.tgl_lahir, U.alamat, U.saldo_mypay, P.level)
+        FROM sijarta.user U
+        RIGHT JOIN sijarta.pelanggan P ON U.id = P.id
+        WHERE U.id = %s;
+        """
+
+        pekerja_sql = """
+        SELECT (U.id, U.nama, U.jenis_kelamin, U.no_hp, U.pwd, U.tgl_lahir, U.alamat, U.saldo_mypay, P.nama_bank, P.nomor_rekening, P.npwp, P.link_foto, P.rating, P.jml_pesanan_selesai)
+        FROM sijarta.user U
+        RIGHT JOIN sijarta.pekerja P ON U.id = P.id
+        WHERE U.id = %s;
+        """
+
+        pengguna_row = fetch_one(pengguna_sql, [user_id])
+        pekerja_row = fetch_one(pekerja_sql, [user_id])
+
+        if pengguna_row:
+            pengguna_row = tuple(pengguna_row[0][1:-1].split(","))
+            return {
+                "is_pengguna": True,
+                "id": pengguna_row[0],
+                "nama": pengguna_row[1],
+                "jenis_kelamin": pengguna_row[2],
+                "no_hp": pengguna_row[3],
+                "pwd": pengguna_row[4],
+                "tgl_lahir": pengguna_row[5],
+                "alamat": pengguna_row[6],
+                "saldo_mypay": pengguna_row[7],
+                "level": pengguna_row[8],
+            }
+        elif pekerja_row:
+            pekerja_row = pekerja_row[0]
+            return {
+                "is_pengguna": False,
+                "id": pekerja_row[0],
+                "nama": pekerja_row[1],
+                "jenis_kelamin": pekerja_row[2],
+                "no_hp": pekerja_row[3],
+                "pwd": pekerja_row[4],
+                "tgl_lahir": pekerja_row[5],
+                "alamat": pekerja_row[6],
+                "saldo_mypay": pekerja_row[7],
+                "nama_bank": pekerja_row[8],
+                "nomor_rekening": pekerja_row[9],
+                "npwp": pekerja_row[10],
+                "link_foto": pekerja_row[11],
+                "rating": pekerja_row[12],
+                "jml_pesanan_selesai": pekerja_row[13],
+            }
+
+        return None
 
     @staticmethod
     def get_user_by_phone_number(phone_number: str) -> dict:
@@ -27,8 +86,12 @@ class UserService:
     @staticmethod
     def hash_password(password):
         """Hashes the given password."""
-        salt = bcrypt.gensalt()
-        return bcrypt.hashpw(password.encode("utf-8"), salt)
+        return make_password(password)
+
+    @staticmethod
+    def check_password(password, hashed_password):
+        """Checks if the given password matches the hashed password."""
+        return check_password(password, hashed_password)
 
     @staticmethod
     def create_pengguna(name, password, gender, phone_number, birthdate, address):
@@ -51,7 +114,7 @@ class UserService:
                 name,
                 gender,
                 phone_number,
-                hashed_password.decode("utf-8"),
+                hashed_password,
                 birthdate,
                 address,
                 id,
@@ -92,7 +155,7 @@ class UserService:
                 name,
                 gender,
                 phone_number,
-                hashed_password.decode("utf-8"),
+                hashed_password,
                 birthdate,
                 address,
                 id,

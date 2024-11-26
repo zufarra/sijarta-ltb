@@ -5,6 +5,7 @@ from django.conf import settings
 
 # JWT settings
 SECRET_KEY = settings.SECRET_KEY  # Or a custom key
+
 ALGORITHM = "HS256"  # Using HMAC SHA-256 for JWT encoding
 EXPIRATION_TIME = 3600  # Token expiration in seconds (1 hour)
 
@@ -20,13 +21,8 @@ def generate_jwt(user_id, username):
 
 def decode_jwt(token):
     """Decode JWT and return the payload."""
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except jwt.ExpiredSignatureError:
-        return None  # Token has expired
-    except jwt.InvalidTokenError:
-        return None  # Invalid token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return payload
 
 
 def verify_jwt(token):
