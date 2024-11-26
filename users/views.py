@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
 
 from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm
+from users.services.user_service import UserService
 
 # Create your views here.
 
@@ -56,6 +56,12 @@ def register(request):
             birthdate = request.POST["birthdate"]
             address = request.POST["address"]
 
+            search_phone_number = UserService.get_user_by_phone_number(phone_number)
+            if search_phone_number:
+                return JsonResponse(
+                    {"message": "Phone number already registered"}, status=400
+                )
+
             pass
         elif request.POST["user_type"] == "pekerja":
             # Register pekerja
@@ -79,7 +85,7 @@ def register(request):
             photo_url = request.POST["photo_url"]
             pass
         else:
-            return HttpResponse("Invalid user type", status=400)
+            return JsonResponse({"message": "Invalid user type"}, status=400)
 
     return render(
         request,
