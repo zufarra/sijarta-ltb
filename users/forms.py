@@ -3,6 +3,26 @@ import re
 from django import forms
 
 
+class UserLoginForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({"class": "form-control"})
+
+    phone_number = forms.CharField(
+        min_length=10,
+        max_length=15,
+        required=True,
+    )
+
+    password = forms.CharField(
+        min_length=8,
+        max_length=254,
+        required=True,
+    )
+
+
 class PenggunaRegistrationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,7 +59,6 @@ class PenggunaRegistrationForm(forms.Form):
         min_length=10,
         max_length=15,
         required=True,
-        widget=forms.TextInput(),
     )
     birthdate = forms.DateField(
         required=True,

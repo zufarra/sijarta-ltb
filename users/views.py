@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm
+from users.forms import PekerjaRegistrationForm, PenggunaRegistrationForm, UserLoginForm
 from users.services.user_service import UserService
 from users.utils.jwt_utils import generate_jwt
 
@@ -28,8 +28,9 @@ def show_profile(request):
 
 
 def show_login(request):
+    login_form = UserLoginForm()
     context = {
-        "user": request.user,
+        "form": login_form,
     }
 
     return render(request, "show_login.html", context)
