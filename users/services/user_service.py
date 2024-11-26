@@ -184,3 +184,47 @@ class UserService:
             sql,
             [name, gender, phone_number, hashed_password, birthdate, address, id],
         )
+
+    @staticmethod
+    def update_pekerja(
+        id,
+        name,
+        password,
+        gender,
+        phone_number,
+        birthdate,
+        address,
+        bank_name,
+        bank_account_number,
+        npwp,
+        photo_url,
+    ):
+        """Updates a pekerja in the database."""
+        sql = """
+        UPDATE sijarta.user
+        SET nama = %s, jenis_kelamin = %s, no_hp = %s, pwd = %s, tgl_lahir = %s, alamat = %s
+        WHERE id = %s;
+
+        UPDATE sijarta.pekerja
+        SET nama_bank = %s, nomor_rekening = %s, npwp = %s, link_foto = %s
+        WHERE id = %s;
+        """
+
+        hashed_password = UserService.hash_password(password)
+        execute_query(
+            sql,
+            [
+                name,
+                gender,
+                phone_number,
+                hashed_password,
+                birthdate,
+                address,
+                id,
+                bank_name,
+                bank_account_number,
+                npwp,
+                photo_url,
+                id,
+            ],
+        )

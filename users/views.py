@@ -66,7 +66,7 @@ def show_profile(request):
                 )
 
             return redirect("user:show_profile")
-        elif request.user["is_pekerja"]:
+        elif not request.user["is_pengguna"]:
             pekerja_form = PekerjaRegistrationForm(request.POST)
             if not pekerja_form.is_valid():
                 return render(
