@@ -10,6 +10,7 @@ from users.utils.jwt_utils import generate_jwt
 
 
 def show_landing(request):
+
     context = {
         "user": request.user,
     }
@@ -24,6 +25,98 @@ def show_landing(request):
 def show_profile(request):
     pengguna_form = PenggunaRegistrationForm(request.user)
     pekerja_form = PekerjaRegistrationForm(request.user)
+
+    if request.method == "POST":
+        if request.user["is_pengguna"]:
+            pengguna_form = PenggunaRegistrationForm(request.POST)
+            if not pengguna_form.is_valid():
+                return render(
+                    request,
+                    "show_profile.html",
+                    {
+                        "user": request.user,
+                        "pengguna_form": pengguna_form,
+                        "pekerja_form": pekerja_form,
+                    },
+                )
+
+            name = request.POST["name"]
+            password = request.POST["password"]
+            gender = request.POST["gender"]
+            phone_number = request.POST["phone_number"]
+            birthdate = request.POST["birthdate"]
+            address = request.POST["address"]
+
+            if not UserService.check_password(password, request.user["password_hash"]):
+                return JsonResponse({"message": "Invalid password"}, status=400)
+
+            try:
+                UserService.update_pengguna(
+                    request.user["id"],
+                    name,
+                    password,
+                    gender,
+                    phone_number,
+                    birthdate,
+                    address,
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"message": "Failed to update user", "error": str(e)}, status=500
+                )
+
+            return redirect("user:show_profile")
+        elif request.user["is_pekerja"]:
+            pekerja_form = PekerjaRegistrationForm(request.POST)
+            if not pekerja_form.is_valid():
+                return render(
+                    request,
+                    "show_profile.html",
+                    {
+                        "user": request.user,
+                        "pengguna_form": pengguna_form,
+                        "pekerja_form": pekerja_form,
+                    },
+                )
+
+            name = request.POST["name"]
+            password = request.POST["password"]
+            gender = request.POST["gender"]
+            phone_number = request.POST["phone_number"]
+            birthdate = request.POST["birthdate"]
+            address = request.POST["address"]
+            bank_name = request.POST["bank_name"]
+            bank_account_number = request.POST["bank_account_number"]
+            npwp = request.POST["npwp"]
+            photo_url = request.POST["photo_url"]
+
+            if not UserService.check_password(password, request.user["password_hash"]):
+                return JsonResponse({"message": "Invalid password"}, status=400)
+
+            try:
+                UserService.update_pekerja(
+                    request.user["id"],
+                    name,
+                    password,
+                    gender,
+                    phone_number,
+                    birthdate,
+                    address,
+                    bank_name,
+                    bank_account_number,
+                    npwp,
+                    photo_url,
+                )
+
+            except Exception as e:
+                return JsonResponse(
+                    {"message": "Failed to update user", "error": str(e)}, status=500
+                )
+
+            return redirect("user:show_profile")
+
+        else:
+            return JsonResponse({"message": "Invalid user type"}, status=400)
 
     context = {
         "user": request.user,
@@ -85,14 +178,6 @@ def register(request):
             birthdate = request.POST["birthdate"]
             address = request.POST["address"]
 
-            search_phone_number = UserService.get_user_by_phone_number(phone_number)
-            if search_phone_number:
-                return JsonResponse(
-                    {"message": "Phone number already registered"}, status=400
-                )
-
-            gender = "L" if gender == "M" else "P"
-
             try:
                 UserService.create_pengguna(
                     name, password, gender, phone_number, birthdate, address
@@ -127,14 +212,6 @@ def register(request):
             bank_account_number = request.POST["bank_account_number"]
             npwp = request.POST["npwp"]
             photo_url = request.POST["photo_url"]
-
-            search_phone_number = UserService.get_user_by_phone_number(phone_number)
-            if search_phone_number:
-                return JsonResponse(
-                    {"message": "Phone number already registered"}, status=400
-                )
-
-            gender = "L" if gender == "M" else "P"
 
             try:
                 UserService.create_pekerja(

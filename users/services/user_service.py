@@ -169,3 +169,18 @@ class UserService:
                 photo_url,
             ],
         )
+
+    @staticmethod
+    def update_pengguna(id, name, password, gender, phone_number, birthdate, address):
+        """Updates a pengguna in the database."""
+        sql = """
+        UPDATE sijarta.user
+        SET nama = %s, jenis_kelamin = %s, no_hp = %s, pwd = %s, tgl_lahir = %s, alamat = %s
+        WHERE id = %s;
+        """
+
+        hashed_password = UserService.hash_password(password)
+        execute_query(
+            sql,
+            [name, gender, phone_number, hashed_password, birthdate, address, id],
+        )
