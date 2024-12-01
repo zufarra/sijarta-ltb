@@ -1,14 +1,123 @@
+from uuid import UUID
+from django.http import JsonResponse
 from django.shortcuts import render
-
+from services_and_booking.services.category_service import CategoryAndSubcategoryService
 
 # Create your views here.
 def show_homepage(request):
+    categories = CategoryAndSubcategoryService.get_all_categories()
+
+    # Daftar kategori dan subkategori 
+    category_subcategory_pairs = []
+    for category in categories:
+        subcategories = CategoryAndSubcategoryService.get_subcategories_by_category(category['id'])
+        category_subcategory_pairs.append({
+            'category': category,
+            'subcategories': subcategories
+        })
+    
+    search_results = []
+    message = ''  
+    category_id_filter = request.POST.get('category_filter')
+    subcategory_name = request.POST.get('search_subcategory', '').lower()
+
+    if request.method == 'POST':
+        # kosongan gaada filter
+        if not category_id_filter and not subcategory_name:
+            category_subcategory_pairs = [{
+                'category': category,
+                'subcategories': CategoryAndSubcategoryService.get_subcategories_by_category(category['id'])
+            } for category in categories]
+            message = ''
+
+        else:
+            # Filter berdasarkan kategori jika ada
+            if category_id_filter and category_id_filter != "Pilih Kategori...":
+                try:
+                    category_id_filter = UUID(category_id_filter)
+                    category_subcategory_pairs = [{
+                        'category': next(cat for cat in categories if cat['id'] == category_id_filter),
+                        'subcategories': CategoryAndSubcategoryService.get_subcategories_by_category(category_id_filter)
+                    }]
+                except ValueError:
+                    message = "ID kategori yang dimasukkan tidak valid."
+                    category_subcategory_pairs = []
+
+            # filter cuman kategori
+            if subcategory_name:
+                search_results = []
+                for pair in category_subcategory_pairs:
+                    filtered_subcategories = [
+                        subcategory for subcategory in pair['subcategories'] 
+                        if subcategory_name in subcategory['nama_subkategori'].lower()
+                    ]
+                    if filtered_subcategories:
+                        search_results.append({
+                            'category': pair['category'],
+                            'subcategories': filtered_subcategories
+                        })
+
+                # Kalo gaada subkategori yang cocok
+                if not search_results:
+                    message = "Subkategori yang Anda cari tidak ditemukan."
+
+            # Kalo kategori dan subkategori dicari bersama
+            if category_id_filter and subcategory_name:
+                search_results = []
+                for pair in category_subcategory_pairs:
+                    # Filter berdasarkan kategori
+                    if pair['category']['id'] == category_id_filter:
+                        filtered_subcategories = [
+                            subcategory for subcategory in pair['subcategories']
+                            if subcategory_name in subcategory['nama_subkategori'].lower()
+                        ]
+                        # kalo ada subkategori yang cocok
+                        if filtered_subcategories:
+                            search_results.append({
+                                'category': pair['category'],
+                                'subcategories': filtered_subcategories
+                            })
+
+                if not search_results:
+                    message = "Tidak ada hasil yang cocok dengan pencarian Anda."
+
+            # kategori ga di filter, tapi subnya iya
+            if not category_id_filter or category_id_filter == "Pilih Kategori...":
+                search_results = []
+                for pair in category_subcategory_pairs:
+                    filtered_subcategories = [
+                        subcategory for subcategory in pair['subcategories']
+                        if subcategory_name in subcategory['nama_subkategori'].lower()
+                    ]
+                    if filtered_subcategories:
+                        search_results.append({
+                            'category': pair['category'],
+                            'subcategories': filtered_subcategories
+                        })
+
+                if not search_results:
+                    message = "Subkategori yang Anda cari tidak ditemukan."
+
     context = {
         "user": request.user,
+        "categories": categories,
+        "category_subcategory_pairs": category_subcategory_pairs,
+        "search_results": search_results,
+        "message": message,
+        "category_id_filter": category_id_filter, 
+        "subcategory_name": subcategory_name,
     }
 
     return render(request, "homepage.html", context)
 
+
+def search_subcategory(request):
+    query = request.GET.get('query', '')
+    if query:
+        search_results = CategoryAndSubcategoryService.search_subcategory_by_name(query)
+        results = [{'nama_subkategori': subcategory['subcategory_name']} for subcategory in search_results]
+        return JsonResponse({'results': results})
+    return JsonResponse({'results': []})
 
 def show_subkategori(request):
     context = {
