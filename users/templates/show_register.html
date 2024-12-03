@@ -15,7 +15,7 @@
                     </div>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item flex-fill" role="presentation">
-                            <button class="nav-link active w-100 border-start-0"
+                            <button class="nav-link w-100 border-start-0 {% if not show_pekerja %}active{% endif %}"
                                     id="pengguna-form-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#pengguna-form-tab-pane"
@@ -25,7 +25,7 @@
                                     aria-selected="true">Pengguna</button>
                         </li>
                         <li class="nav-item flex-fill" role="presentation">
-                            <button class="nav-link w-100 border-end-0"
+                            <button class="nav-link w-100 border-end-0 {% if show_pekerja %}active{% endif %}"
                                     id="pekerja-form-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#pekerja-form-tab-pane"
@@ -36,27 +36,30 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active"
+                        <div class="tab-pane fade {% if not show_pekerja %}show active{% endif %}"
                              id="pengguna-form-tab-pane"
                              role="tabpanel"
                              aria-labelledby="pengguna-form-tab"
                              tabindex="0">
-                            <form class="card-body">
+                            <form class="card-body" method="post">
                                 {% include 'register_pengguna_form.html' %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success">Register</button>
+                                </div>
                             </form>
                         </div>
-                        <div class="tab-pane fade"
+                        <div class="tab-pane fade {% if show_pekerja %}show active{% endif %}"
                              id="pekerja-form-tab-pane"
                              role="tabpanel"
                              aria-labelledby="pekerja-form-tab"
                              tabindex="0">
-                            <form class="card-body">
+                            <form class="card-body" method="post">
                                 {% include 'register_pekerja_form.html' %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success">Register</button>
+                                </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-success">Register</button>
                     </div>
                 </div>
             </div>

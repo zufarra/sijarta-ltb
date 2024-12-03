@@ -65,7 +65,7 @@
       </ul>
       <div class="d-flex gap-3">
         <span class="navbar-text">Logged in as {{ user.name }} (Pengguna)</span>
-        <a class="btn btn-danger" href="#">Logout</a>
+        <a class="btn btn-danger" href="{% url 'user:logout' %}">Logout</a>
       </div>
       {% else %}
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
@@ -94,7 +94,7 @@
       </ul>
       <div class="d-flex gap-3">
         <span class="navbar-text">Logged in as {{ user.name }} (Pekerja)</span>
-        <a class="btn btn-danger" href="#">Logout</a>
+        <a class="btn btn-danger" href="{% url 'user:logout' %}">Logout</a>
       </div>
       {% endif %} {% else %}
       <!-- Navbar for Guest (Not Logged In) -->
@@ -105,7 +105,7 @@
           >
         </li>
         <li class="nav-item">
-          <a class="btn btn-success" href="{% url 'user:show_register' %}"
+          <a class="btn btn-success" href="{% url 'user:register' %}"
             >Register</a
           >
         </li>

@@ -1,0 +1,42 @@
+-- Phone number check procedure (to avoid duplicates)
+CREATE OR REPLACE FUNCTION CHECK_PHONE_NUMBER()
+RETURNS TRIGGER AS 
+$$
+    BEGIN
+        IF EXISTS (SELECT 1 FROM SIJARTA.USER WHERE NO_HP = NEW.NO_HP) 
+        THEN RAISE EXCEPTION 'Phone number is already registered';
+        END IF;
+
+        RETURN NEW;
+    END;
+$$
+LANGUAGE PLPGSQL;
+
+-- Perform check on inserting value into 'SIJARTA.USER' table
+CREATE OR REPLACE TRIGGER USER_PHONE_NUMBER_CHECK
+BEFORE INSERT ON SIJARTA.USER
+FOR EACH ROW EXECUTE PROCEDURE CHECK_PHONE_NUMBER();
+
+-- Bank credentials check procedure
+CREATE OR REPLACE FUNCTION CHECK_BANK_CREDENTIALS()
+RETURNS TRIGGER AS 
+$$
+    BEGIN
+        IF EXISTS 
+            (SELECT 1 FROM SIJARTA.PEKERJA 
+                WHERE 
+                    NAMA_BANK = NEW.NAMA_BANK AND
+                    NOMOR_REKENING = NEW.NOMOR_REKENING
+            ) 
+        THEN RAISE EXCEPTION 'Bank credentials (name and account number) is already registered';
+        END IF;
+
+        RETURN NEW;
+    END;
+$$
+LANGUAGE PLPGSQL;
+
+-- Perform check on inserting value into 'SIJARTA.PEKERJA' table
+CREATE OR REPLACE TRIGGER PEKERJA_BANK_CREDENTIALS_CHECK
+BEFORE INSERT ON SIJARTA.PEKERJA
+FOR EACH ROW EXECUTE PROCEDURE CHECK_BANK_CREDENTIALS();
