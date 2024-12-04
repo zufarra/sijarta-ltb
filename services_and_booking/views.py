@@ -229,9 +229,6 @@ def create_order(request):
             else:
                 session_price -= float(valid_diskon['potongan'])
         
-        # order_id, tgl_pemesanan, tgl_pekerjaan, waktu_pekerjaan, total_biaya, 
-        # id_pelanggan, id_kategori_jasa, sesi, id_diskon, id_metode_bayar
-        # belum dibuat
         OrderService.create_order(order_id, 
                                 tanggal_pemesanan, 
                                 session_price, 
@@ -261,17 +258,39 @@ def create_order(request):
 
 def show_booking_view(request):
     customer_id = request.user['id']
+
+    subkategori_filter = request.POST.get('filter-subkategori')
+    status_filter = request.POST.get('filter-status')
+
     pesanan_list = OrderService.get_booking_view(customer_id)
+
+    subkategori_options = sorted(set(pesanan['subkategori'] for pesanan in pesanan_list))
+    status_options = sorted(set(pesanan['status'] for pesanan in pesanan_list))
+
+    if subkategori_filter and subkategori_filter != "Pilih Subkategori":
+        pesanan_list = [pesanan for pesanan in pesanan_list if pesanan['subkategori'] == subkategori_filter]
+
+    if status_filter and status_filter != "Pilih Status Pesanan":
+        pesanan_list = [pesanan for pesanan in pesanan_list if pesanan['status'] == status_filter]
 
     for pesanan in pesanan_list:
         pesanan['harga'] = "Rp {:,.0f}".format(pesanan['harga'])
 
     context = {
         "user": request.user,
-        "pesanan_list": pesanan_list
+        "pesanan_list": pesanan_list,
+        "subkategori_filter": subkategori_filter,
+        "status_filter": status_filter,
+        "subkategori_options": subkategori_options,
+        "status_options": status_options
     }
 
-    print(pesanan_list)
     return render(request, "booking_view.html", context)
+
+def cancel_booking(request):
+    if request.method == 'POST':
+        id_pemesanan = request.POST.get('pesanan_id')
+        OrderService.delete_order(id_pemesanan)
+        return redirect('service:show_booking_view')
 
 

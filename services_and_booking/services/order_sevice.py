@@ -16,6 +16,7 @@ class OrderService:
     def get_booking_view(user_id):
         sql = """
         SELECT 
+            tpj.id AS id_pemesanan,
             sb.nama_subkategori AS subkategori,
             sj.sesi AS sesi_layanan,
             tpj.total_biaya AS harga,
@@ -124,3 +125,16 @@ class OrderService:
         values = [order_id, status_id, tgl_waktu]
 
         execute_query(sql, values)
+
+    def delete_order(id_pemesanan):
+        sql_delete_status = """
+        DELETE FROM SIJARTA.TR_PEMESANAN_STATUS
+        WHERE id_tr_pemesanan = %s;
+        """
+        execute_query(sql_delete_status, [id_pemesanan])
+
+        sql_delete_jasa = """
+        DELETE FROM SIJARTA.TR_PEMESANAN_JASA
+        WHERE id = %s;
+        """
+        execute_query(sql_delete_jasa, [id_pemesanan])
