@@ -7,10 +7,12 @@
 {% include 'navbar.html' %}
 <div class="container mt-4">
     <div class="border rounded p-3 mb-3">
+      <form action="/pekerjajasa/status/" method="post">
+        {% csrf_token %}    
         <div class="container">
             <div class="row g-3 align-items-center justify-content-center">
                 <div class="col-lg-5">
-                    <input type="text" class="form-control" placeholder="Nama Jasa">
+                    <input type="text" name="match" class="form-control" placeholder="Nama Jasa">
                 </div>
                 <div class="col-lg-3">
                     <div class="dropdown">
@@ -18,18 +20,25 @@
                           Status
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item w-100" href="#" id="kategori">Status 1</a></li>
+                          <li><a class="dropdown-item w-100" href="#" id="kategori" id-value="">Semua</a></li>
+                          {% for status in statuses %}
+                          <li><a class="dropdown-item w-100" href="#" id="kategori" id-value="{{ status.id }}">{{ status.status }}</a></li>
+                          {% endfor %}
                         </ul>
                       </div>     
+                      <input type="text" hidden name="status" id="selector">
                 </div>
                 <div class="col-lg-2">
                     <button class="btn btn-success w-100 text-white">Search</button>
                 </div>
             </div>
         </div>
+      </form>
     </div>
     <div class="border rounded p-3" id="state">
       {% for pekerjaan in pekerjaan %}
+      <form action="/pekerjajasa/update_status/" method="post">
+        {% csrf_token %} 
         <div class="card mb-3">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
@@ -54,13 +63,36 @@
                 <p class="d-flex" style="flex:0 0 20%">Total Biaya</p>
                 <p class="d-flex" style="flex:0 0 80%">: Rp{{ pekerjaan.total_biaya }}</p>
               </div>
-              <a href="#" class="btn btn-primary">Update Status</a>
+              <input type="text" name="id" hidden value="{{ pekerjaan.id }}">
+              {% if pekerjaan.status != "Pekerjaan Selesai" %}
+              <button type="submit" class="btn btn-primary">Update Status</button>
+              {% endif %}
             </div>
-          </div>
+        </div>
+      </form>
           {% empty %}
             Belum ada pekerjaan.
           {% endfor %}
-    </div>
   </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+    const dropdownButton = document.getElementById("kategori");
+    const status_select = document.getElementById("selector")
+
+    dropdownItems.forEach((item) => {
+        item.addEventListener("click", function (event) {
+            event.preventDefault(); 
+            const statusName = this.textContent.trim();
+            const statusId = this.getAttribute("id-value");
+            dropdownButton.textContent = statusName;
+            status_select.value = statusId;
+        });
+    });
+    
+});
+</script>
 
 {% endblock content %}
