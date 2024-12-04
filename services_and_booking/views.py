@@ -1,7 +1,11 @@
+from datetime import datetime
+from django.contrib import messages
 from uuid import UUID
+import uuid
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from services_and_booking.services.category_service import CategoryAndSubcategoryService
+from services_and_booking.services.order_sevice import OrderService
 
 # Create your views here.
 def show_homepage(request):
@@ -119,132 +123,155 @@ def search_subcategory(request):
         return JsonResponse({'results': results})
     return JsonResponse({'results': []})
 
-def show_subkategori(request):
+def show_subkategori(request, subcategory_id):
+    subcategory_data = CategoryAndSubcategoryService.get_subcategory_details(subcategory_id)
+
+    category_id = subcategory_data['category_id']
+    subcategory_id = subcategory_data['subcategory_id']
+    category_name = subcategory_data['nama_kategori']
+    subcategory_name = subcategory_data['nama_subkategori']
+    subcategory_description = subcategory_data['deskripsi']
+
+    workers = []
+    sessions = []
+    testimonies = []
+    workers = CategoryAndSubcategoryService.get_workers_by_category(category_id)
+    sessions = CategoryAndSubcategoryService.get_sessions_by_subcategory(subcategory_id)
+    payment_methods = OrderService.get_payment_method_details()
+
+    pekerja_sudah_bergabung = False
+    if request.user['is_pengguna'] == False :
+        for worker in workers:
+            if worker['pekerja_id'] == request.user['id']: 
+                pekerja_sudah_bergabung = True
+                break
+
+    current_date_no_formatting = datetime.now()
+    current_date = datetime.now().strftime('%Y-%m-%d')
+
     context = {
-        "user": {
-            "is_authenticated": True,
-            "name": "John Doe",
-            "is_pengguna": True,
-            "email": "johndoe@mail.com",
-            "phone": "123-456-7890",
-            "address": "1234 Elm St",
-        },
-        "pekerja_list": [
-            {
-                "id": 1,
-                "nama": "Zufar Romli",
-                "rating": 9.5,
-                "jumlah_pesanan": 120,
-                "no_hp": "081234567890",
-                "tanggal_lahir": "1990-01-01",
-                "alamat": "Jakarta",
-            },
-            {
-                "id": 2,
-                "nama": "Jane Smith",
-                "rating": 8.9,
-                "jumlah_pesanan": 85,
-                "no_hp": "082123456789",
-                "tanggal_lahir": "1992-03-15",
-                "alamat": "Bandung",
-            },
-            {
-                "id": 3,
-                "nama": "Michael Johnson",
-                "rating": 9.2,
-                "jumlah_pesanan": 98,
-                "no_hp": "081223344556",
-                "tanggal_lahir": "1988-06-30",
-                "alamat": "Surabaya",
-            },
-            {
-                "id": 4,
-                "nama": "Emily Davis",
-                "rating": 8.5,
-                "jumlah_pesanan": 76,
-                "no_hp": "081987654321",
-                "tanggal_lahir": "1993-12-20",
-                "alamat": "Yogyakarta",
-            },
-            {
-                "id": 5,
-                "nama": "Chris Lee",
-                "rating": 9.8,
-                "jumlah_pesanan": 150,
-                "no_hp": "082234567890",
-                "tanggal_lahir": "1985-07-12",
-                "alamat": "Semarang",
-            },
-            {
-                "id": 6,
-                "nama": "Jessica Wilson",
-                "rating": 8.7,
-                "jumlah_pesanan": 88,
-                "no_hp": "081345678912",
-                "tanggal_lahir": "1994-09-05",
-                "alamat": "Denpasar",
-            },
-            {
-                "id": 7,
-                "nama": "David Brown",
-                "rating": 9.1,
-                "jumlah_pesanan": 105,
-                "no_hp": "081223344567",
-                "tanggal_lahir": "1989-04-18",
-                "alamat": "Medan",
-            },
-            {
-                "id": 8,
-                "nama": "Sophia Martinez",
-                "rating": 9.4,
-                "jumlah_pesanan": 115,
-                "no_hp": "082123456890",
-                "tanggal_lahir": "1991-11-11",
-                "alamat": "Makassar",
-            },
-        ],
+        'category_name': category_name,
+        'subcategory_name': subcategory_name,
+        'subcategory_id' : subcategory_id,
+        'subcategory_description': subcategory_description,
+        'workers': workers,
+        'sessions' : sessions,
+        'testimonies' : testimonies,
+        'pekerja_bergabung' : pekerja_sudah_bergabung,
+        'payment_methods' : payment_methods,
+        'current_date' : current_date,
+        'current_date_no_formatting' : current_date_no_formatting
     }
+
 
     return render(request, "subkategori.html", context)
 
+def join_category(request, subcategory_id):
+    if request.method == 'POST' :
+        subcategory_data = CategoryAndSubcategoryService.get_subcategory_details(subcategory_id)
+        category_id = subcategory_data['category_id']
+        worker_id = request.user['id']
+
+        CategoryAndSubcategoryService.add_worker_to_category(worker_id, category_id)
+
+        subcategory_data = CategoryAndSubcategoryService.get_subcategory_details(subcategory_id)
+
+        category_id = subcategory_data['category_id']
+        subcategory_id = subcategory_data['subcategory_id']
+        category_name = subcategory_data['nama_kategori']
+        subcategory_name = subcategory_data['nama_subkategori']
+        subcategory_description = subcategory_data['deskripsi']
+
+        workers = []
+        sessions = []
+        testimonies = []
+        workers = CategoryAndSubcategoryService.get_workers_by_category(category_id)
+        sessions = CategoryAndSubcategoryService.get_sessions_by_subcategory(subcategory_id)
+
+
+        pekerja_sudah_bergabung = False
+        if request.user['is_pengguna'] == False :
+            for worker in workers:
+                if worker['pekerja_id'] == request.user['id']: 
+                    pekerja_sudah_bergabung = True
+                    break
+        
+        context = {
+            'category_name': category_name,
+            'subcategory_name': subcategory_name,
+            'subcategory_id' : subcategory_id,
+            'subcategory_description': subcategory_description,
+            'workers': workers,
+            'sessions' : sessions,
+            'testimonies' : testimonies,
+            'pekerja_bergabung' : pekerja_sudah_bergabung,
+        }
+
+        return render(request, 'subkategori.html', context)
+
+def create_order(request):
+    if request.method == 'POST':
+        order_id = uuid.uuid4()
+        subcategory_id = request.POST.get('subcategory_id')
+        session_name = request.POST.get('session_name')
+        session_price = float(request.POST.get('session_price'))
+        diskon = request.POST.get('diskon')
+        metode_bayar = request.POST.get('metode_bayar')
+        tanggal_pemesanan = request.POST.get('tanggal_pemesanan')
+        pelanggan_id = request.user['id']
+
+        message = None
+        if diskon:
+            valid_diskon = OrderService.check_discount_code(diskon,pelanggan_id)
+            if not valid_diskon:
+                message = "Kode diskon yang Anda masukkan tidak valid."
+                return redirect("service:show_subkategori", subcategory_id=subcategory_id)
+            else:
+                session_price -= float(valid_diskon['potongan'])
+        
+        # order_id, tgl_pemesanan, tgl_pekerjaan, waktu_pekerjaan, total_biaya, 
+        # id_pelanggan, id_kategori_jasa, sesi, id_diskon, id_metode_bayar
+        # belum dibuat
+        OrderService.create_order(order_id, 
+                                tanggal_pemesanan, 
+                                session_price, 
+                                pelanggan_id, 
+                                subcategory_id,
+                                session_name,
+                                diskon,
+                                metode_bayar)
+        
+        if OrderService.get_payment_method_name(metode_bayar) == "MyPay":
+            status_name = "Menunggu Pembayaran"
+        else:
+            status_name = "Mencari Pekerja Terdekat"
+        
+        status_id = OrderService.get_status_id_by_name(status_name)
+
+        tgl_waktu =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        print(status_id)
+        OrderService.add_order_status(order_id,
+                                      status_id,
+                                      tgl_waktu
+                                      )
+        
+        return redirect("service:show_booking_view")
+
 
 def show_booking_view(request):
+    customer_id = request.user['id']
+    pesanan_list = OrderService.get_booking_view(customer_id)
+
+    for pesanan in pesanan_list:
+        pesanan['harga'] = "Rp {:,.0f}".format(pesanan['harga'])
+
     context = {
         "user": request.user,
-        "pesanan_list": [
-            {
-                "id": 1,
-                "subkategori": "Reparasi Televisi",
-                "sesi_layanan": "Perbaikan Layar Retak",
-                "harga": "Rp 150.000",
-                "nama_pekerja": "Jane Smith",
-                "status": "Menunggu Pembayaran",
-            },
-            {
-                "id": 2,
-                "subkategori": "Reparasi Kulkas",
-                "sesi_layanan": "Ganti Komponen Internal",
-                "harga": "Rp 250.000",
-                "nama_pekerja": "Sophia Martinez",
-                "status": "Mencari Pekerja Terdekat",
-            },
-            {
-                "id": 3,
-                "subkategori": "Pengiriman Barang",
-                "sesi_layanan": "Pindahan Rumah",
-                "harga": "Rp 200.000",
-                "nama_pekerja": "Zufar Romli",
-                "status": "Pesanan Selesai",
-            },
-            {
-                "id": 4,
-                "subkategori": "Reparasi Televisi",
-                "sesi_layanan": "Perbaikan Layar Retak",
-                "harga": "Rp 150.000",
-                "nama_pekerja": "Jane Smith",
-                "status": "Sedang Diproses",
-            },
-        ],
+        "pesanan_list": pesanan_list
     }
 
+    print(pesanan_list)
     return render(request, "booking_view.html", context)
+
+

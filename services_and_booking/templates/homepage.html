@@ -61,7 +61,7 @@
                                 <div class="row">
                                     {% for subcategory in result.subcategories %}
                                         <div class="col-12 mb-3">
-                                            <a href="" class="clickable-box">
+                                            <a href="{% url 'service:show_subkategori' subcategory.id %}" class="clickable-box">
                                                 <div class="card text-center p-3">
                                                     <h5>{{ subcategory.nama_subkategori }}</h5>
                                                 </div>
@@ -94,7 +94,7 @@
                                 <div class="row">
                                     {% for subcategory in pair.subcategories %}
                                         <div class="col-12 mb-3">
-                                            <a href="" class="clickable-box">
+                                            <a href="{% url 'service:show_subkategori' subcategory.id %}" class="clickable-box">
                                                 <div class="card text-center p-3">
                                                     <h5>{{ subcategory.nama_subkategori }}</h5>
                                                 </div>
@@ -137,5 +137,4 @@
             color: #0056b3;
         }
     </style>
-
 {% endblock %}
