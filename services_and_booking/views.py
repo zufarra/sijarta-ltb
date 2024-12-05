@@ -1,7 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from services_and_booking.services.testimoni_service import TestimoniService
 
 
-# Create your views here.
+def create_testimoni(request):
+    if request.method == 'POST':
+        # Ambil data dari form
+        rating = request.POST.get('rating')
+        komentar = request.POST.get('komentar')
+        id_tr_pemesanan = request.POST.get('id_tr_pemesanan')  # Ambil ID pemesanan dari form (pastikan form mengirim ID)
+
+        # Validasi status pesanan
+        status = TestimoniService.check_valid_for_testimoni(id_tr_pemesanan)
+
+        if status == 'Pesanan Selesai':  # Jika status pesanan 'Pesanan Selesai'
+            # Simpan testimoni
+            TestimoniService.create_testimoni(id_tr_pemesanan, komentar, rating)
+            messages.success(request, 'Testimoni berhasil dibuat!')
+            return redirect('some_page')  # Ganti dengan halaman yang sesuai setelah sukses
+
+        else:
+            # Pesan jika status pesanan tidak 'Pesanan Selesai'
+            messages.error(request, 'Pesanan belum selesai, tidak dapat memberikan testimoni.')
+            return redirect('some_page')  # Ganti dengan halaman yang sesuai jika gagal
+
+    return render(request, 'your_template.html')
 def show_homepage(request):
     context = {
         "user": request.user,
@@ -11,7 +33,9 @@ def show_homepage(request):
 
 
 def show_subkategori(request):
+    testimoni = TestimoniService.get_all_testimoni()
     context = {
+        "testimoni" : testimoni,
         "user": {
             "is_authenticated": True,
             "name": "John Doe",

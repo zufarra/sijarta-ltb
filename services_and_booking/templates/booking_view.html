@@ -12,10 +12,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="testimoniForm">
+                    <form id="testimoniForm" method="POST" action="{% url 'service:create_testimoni' %}">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="rating" class="form-label">Rating:</label>
-                            <select class="form-select" id="rating" required>
+                            <select class="form-select" id="rating" name="rating" required>
                                 <option value="" disabled selected>Pilih rating</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -31,10 +32,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="komentar" class="form-label">Komentar:</label>
-                            <textarea class="form-control" id="komentar" rows="3" required></textarea>
+                            <textarea class="form-control" id="komentar" name="komentar" rows="3" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
