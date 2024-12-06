@@ -163,6 +163,13 @@
                 document.getElementById('kuota_penggunaan').value = kuota;
             });
         });
+
+        window.onload = function() {
+            var successModal = document.getElementById("modal-sukses");
+            if (successModal) {
+                var modal = new bootstrap.Modal()
+            }
+        };
     </script>
 
 {% endblock content %}

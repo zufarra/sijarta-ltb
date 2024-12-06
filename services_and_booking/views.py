@@ -2,7 +2,7 @@ from datetime import datetime
 from django.contrib import messages
 from uuid import UUID
 import uuid
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from services_and_booking.services.category_service import CategoryAndSubcategoryService
 from services_and_booking.services.order_sevice import OrderService
@@ -134,9 +134,7 @@ def show_subkategori(request, subcategory_id):
     subcategory_name = subcategory_data['nama_subkategori']
     subcategory_description = subcategory_data['deskripsi']
 
-    workers = []
-    sessions = []
-    testimonies = []
+    testimonies = TestimoniService.get_all_testimoni(subcategory_id)
     workers = CategoryAndSubcategoryService.get_workers_by_category(category_id)
     sessions = CategoryAndSubcategoryService.get_sessions_by_subcategory(subcategory_id)
     payment_methods = OrderService.get_payment_method_details()
@@ -164,8 +162,7 @@ def show_subkategori(request, subcategory_id):
         'current_date' : current_date,
         'current_date_no_formatting' : current_date_no_formatting
     }
-
-
+    print(testimonies)
     return render(request, "subkategori.html", context)
 
 def join_category(request, subcategory_id):
@@ -184,9 +181,7 @@ def join_category(request, subcategory_id):
         subcategory_name = subcategory_data['nama_subkategori']
         subcategory_description = subcategory_data['deskripsi']
 
-        workers = []
-        sessions = []
-        testimonies = []
+        testimonies = TestimoniService.get_all_testimoni(subcategory_id)
         workers = CategoryAndSubcategoryService.get_workers_by_category(category_id)
         sessions = CategoryAndSubcategoryService.get_sessions_by_subcategory(subcategory_id)
 
@@ -248,8 +243,6 @@ def create_order(request):
         status_id = OrderService.get_status_id_by_name(status_name)
 
         tgl_waktu =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-        print(status_id)
         OrderService.add_order_status(order_id,
                                       status_id,
                                       tgl_waktu
@@ -300,20 +293,20 @@ def create_testimoni(request):
         # Ambil data dari form
         rating = request.POST.get('rating')
         komentar = request.POST.get('komentar')
-        id_tr_pemesanan = request.POST.get('id_tr_pemesanan')  # Ambil ID pemesanan dari form (pastikan form mengirim ID)
+        id_tr_pemesanan = request.POST.get('pesanan_id')  # ID pemesanan yang dikirim dari form
 
-        # Validasi status pesanan
-        status = TestimoniService.check_valid_for_testimoni(id_tr_pemesanan)
+        # Cek apakah testimoni sudah ada untuk pemesanan ini pada tanggal yang sama
+        result = TestimoniService.check_existing_testimoni(id_tr_pemesanan)
 
-        if status == 'Pesanan Selesai':  # Jika status pesanan 'Pesanan Selesai'
-            # Simpan testimoni
-            TestimoniService.create_testimoni(id_tr_pemesanan, komentar, rating)
-            messages.success(request, 'Testimoni berhasil dibuat!')
-            return redirect('some_page')  # Ganti dengan halaman yang sesuai setelah sukses
+        # Jika sudah ada, beri pesan error dan kembalikan ke halaman yang sesuai
+        if result:
+            return HttpResponse("Testimoni sudah ada untuk pemesanan ini pada tanggal ini.", status=400)
 
-        else:
-            # Pesan jika status pesanan tidak 'Pesanan Selesai'
-            messages.error(request, 'Pesanan belum selesai, tidak dapat memberikan testimoni.')
-            return redirect('some_page')  # Ganti dengan halaman yang sesuai jika gagal
+        # Jika belum ada, lanjutkan untuk membuat testimoni baru
+        TestimoniService.create_testimoni(id_tr_pemesanan, komentar, rating)
 
-    return render(request, 'your_template.html')
+        return redirect('service:show_booking_view')
+
+def delete_testimoni(request, testimoni_id, id_subkategori):
+    TestimoniService.delete_testimoni(testimoni_id)
+    return redirect('service:show_subkategori', subcategory_id=id_subkategori)
