@@ -37,6 +37,7 @@
                                     data-kode_voucher="{{ voucher1.kode }}"
                                     data-harga="{{ voucher1.harga }}"
                                     data-potongan="{{ voucher1.potongan }}"
+                                    data-jml_hari_berlaku="{{ voucher1.jml_hari_berlaku }}"
                                     data-min-transaksi="{{ voucher1.min_tr_pemesanan }}"
                                     data-kuota="{{ voucher1.kuota_penggunaan }}">
                                     Beli
@@ -95,6 +96,8 @@
                         <input type="hidden" name="potongan_voucher" id="potongan_voucher">
                         <input type="hidden" name="min_tr_pemesanan" id="min_tr_pemesanan">
                         <input type="hidden" name="kuota_penggunaan" id="kuota_penggunaan">
+                        <input type="hidden" name="jml_hari_berlaku" id="jml_hari_berlaku">
+
                         <div class="mb-3">
                             <label for="metodePembayaran" class="form-label">Metode Pembayaran</label>
                             <select class="form-select" id="metode_pembayaran" name="metode_pembayaran">
@@ -110,42 +113,30 @@
         </div>
     </div>
 
-    <!-- Modal Sukses -->
-    {% if status_modal == "sukses" %}
-    <div class="modal fade" id="modal-sukses" tabindex="-1" aria-labelledby="modal-suksesLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-suksesLabel">Pembelian Voucher Berhasil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        {% if status_modal == "sukses" %}
+        <div id="toastSukses" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message | safe }}
                 </div>
-                <div class="modal-body">
-                    <p>{{ message | safe }}</p>
-                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
-    </div>
-    {% endif %}
-
-    <!-- Modal Gagal -->
-    {% if status_modal == "gagal" %}
-    <div class="modal fade" id="modal-gagal" tabindex="-1" aria-labelledby="modal-gagalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-gagalLabel">Pembelian Voucher Gagal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        {% elif status_modal == "gagal" %}
+        <div id="toastGagal" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message | safe }}
                 </div>
-                <div class="modal-body">
-                    <p>{{ message | safe }}</p>
-                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 
     <script>
-
         // JavaScript untuk memuat data voucher yang dipilih ke dalam form modal
         var beliVoucherButtons = document.querySelectorAll('.btn-primary');
         beliVoucherButtons.forEach(function(button) {
@@ -155,19 +146,27 @@
                 var potongan = button.getAttribute('data-potongan');
                 var min_transaksi = button.getAttribute('data-min-transaksi');
                 var kuota = button.getAttribute('data-kuota');
+                var jml_hari_berlaku = button.getAttribute('data-jml_hari_berlaku');
+
     
                 document.getElementById('kode_voucher').value = kode_voucher;
                 document.getElementById('harga_voucher').value = harga;
                 document.getElementById('potongan_voucher').value = potongan;
                 document.getElementById('min_tr_pemesanan').value = min_transaksi;
                 document.getElementById('kuota_penggunaan').value = kuota;
+                document.getElementById('jml_hari_berlaku').value = jml_hari_berlaku;
+
             });
         });
 
         window.onload = function() {
-            var successModal = document.getElementById("modal-sukses");
-            if (successModal) {
-                var modal = new bootstrap.Modal()
+            if (document.getElementById("toastSukses")) {
+                var toast = new bootstrap.Toast(document.getElementById("toastSukses"));
+                toast.show();
+            }
+            if (document.getElementById("toastGagal")) {
+                var toast = new bootstrap.Toast(document.getElementById("toastGagal"));
+                toast.show();
             }
         };
     </script>

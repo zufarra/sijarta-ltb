@@ -4,6 +4,7 @@ from diskon.services.diskon_service import DiscountService
 from django.db import IntegrityError
 from django.http import JsonResponse
 import uuid
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -29,6 +30,12 @@ def beli_voucher(request):
         kode_voucher = request.POST.get('kode_voucher')
         harga_voucher = float(request.POST.get('harga_voucher'))
         metode_pembayaran_id = request.POST.get('metode_pembayaran')
+        kuota_penggunaan = request.POST.get('kuota_penggunaan')
+        jml_hari_berlaku = request.POST.get('jml_hari_berlaku')
+        tanggal_mulai = datetime.now()  # Tanggal pembelian voucher
+        tanggal_akhir = tanggal_mulai + timedelta(days=int(jml_hari_berlaku))  # Hitung tanggal akhir berlaku
+        tanggal_akhir_str = tanggal_akhir.strftime('%d/%m/%Y') 
+
         user_id = str(request.user["id"])  # Ambil ID pengguna yang sedang login
         metode_pembayaran_nama = DiscountService.get_metode_bayar(metode_pembayaran_id)
         if metode_pembayaran_nama == "MyPay":
@@ -39,7 +46,7 @@ def beli_voucher(request):
                 # Jika saldo tidak mencukupi, tampilkan modal gagal
                 return render(request, 'show_diskon.html', {
                     'status_modal': 'gagal',
-                    'message': 'Saldo MyPay Anda tidak mencukupi untuk melakukan pembelian.',
+                    'message': 'Maaf, saldo Anda tidak cukup untuk membeli voucher ini.',
                     'voucher': DiscountService.get_all_vouchers(),
                     "promo": promo,
                     'metode_bayar': DiscountService.get_all_metode_bayar(),
@@ -68,7 +75,7 @@ def beli_voucher(request):
             DiscountService.record_mypay_purchase(id_transaksi_mypay, user_id, harga_voucher, DiscountService.get_id_category_voucher("Pembelian Voucher"))
             return render(request, 'show_diskon.html', {
                 'status_modal': 'sukses',
-                'message': f'Pembelian voucher {kode_voucher} berhasil!',
+                'message': f'Selamat! Anda berhasil membeli voucher kode {kode_voucher}. Voucher ini akan berlaku hingga tanggal {tanggal_akhir_str} dengan kuota penggunaan sebanyak {kuota_penggunaan} kali.',
                 'voucher': DiscountService.get_all_vouchers(),
                 'metode_bayar': DiscountService.get_all_metode_bayar(),
                 "promo": promo,
@@ -78,7 +85,7 @@ def beli_voucher(request):
             DiscountService.record_voucher_purchase(id_transaksi_voucher, 0, user_id, kode_voucher, metode_pembayaran_id)
             return render(request, 'show_diskon.html', {
                 'status_modal': 'sukses',
-                'message': f'Pembelian voucher {kode_voucher} berhasil!',
+                'message': f'Selamat! Anda berhasil membeli voucher kode {kode_voucher}. Voucher ini akan berlaku hingga tanggal {tanggal_akhir_str} dengan kuota penggunaan sebanyak {kuota_penggunaan} kali.',
                 'voucher': DiscountService.get_all_vouchers(),
                 'metode_bayar': DiscountService.get_all_metode_bayar(),
                 "promo": promo,
