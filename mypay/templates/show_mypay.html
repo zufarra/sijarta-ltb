@@ -34,7 +34,11 @@
                     <tbody>
                         {% for transaksi in riwayat %}
                         <tr>
-                            <td>{{ transaksi.nominal }}</td>
+                            {% if transaksi.nama == 'Transfer' or transaksi.nama == 'Pembelian Voucher' or transaksi.nama == 'Penarikan Dana' or transaksi.nama == 'Pembayaran Jasa' %}
+                                <td>- Rp{{transaksi.nominal }}</td>
+                            {% else %}
+                                <td>+ Rp{{transaksi.nominal }}</td>
+                            {% endif %}
                             <td>{{ transaksi.tanggal }}</td>
                             <td>{{ transaksi.nama }}</td>
                         </tr>   
