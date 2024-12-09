@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block meta %}
 <title>MyPay</title>
 {% endblock meta %}
@@ -35,9 +36,9 @@
                         {% for transaksi in riwayat %}
                         <tr>
                             {% if transaksi.nama == 'Transfer' or transaksi.nama == 'Pembelian Voucher' or transaksi.nama == 'Penarikan Dana' or transaksi.nama == 'Pembayaran Jasa' %}
-                                <td>- Rp{{transaksi.nominal }}</td>
+                                <td>- Rp{{ transaksi.nominal|intcomma }}</td>
                             {% else %}
-                                <td>+ Rp{{transaksi.nominal }}</td>
+                                <td>+ Rp{{transaksi.nominal|intcomma }}</td>
                             {% endif %}
                             <td>{{ transaksi.tanggal }}</td>
                             <td>{{ transaksi.nama }}</td>
