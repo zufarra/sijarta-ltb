@@ -224,10 +224,14 @@ def create_order(request):
         if diskon:
             valid_diskon = OrderService.check_discount_code(diskon,pelanggan_id)
             if not valid_diskon:
-                message = "Kode diskon yang Anda masukkan tidak valid."
+                messages.error(request, "Kode diskon yang Anda masukkan tidak valid.")
                 return redirect("service:show_subkategori", subcategory_id=subcategory_id)
             else:
                 session_price -= float(valid_diskon['potongan'])
+        
+        if metode_bayar == "Pilih Metode Pembayaran...":
+            messages.error(request, "Pilih metode pembayaran anda")
+            return redirect("service:show_subkategori", subcategory_id=subcategory_id)
         
         OrderService.create_order(order_id, 
                                 tanggal_pemesanan, 
