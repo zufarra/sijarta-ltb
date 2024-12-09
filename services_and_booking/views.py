@@ -300,7 +300,8 @@ def create_testimoni(request):
 
         # Jika sudah ada, beri pesan error dan kembalikan ke halaman yang sesuai
         if result:
-            return HttpResponse("Testimoni sudah ada untuk pemesanan ini pada tanggal ini.", status=400)
+            messages.error(request, "Testimoni untuk pekerja sudah dibuat Anda hari ini!")
+            return redirect('service:show_booking_view')
 
         # Jika belum ada, lanjutkan untuk membuat testimoni baru
         TestimoniService.create_testimoni(id_tr_pemesanan, komentar, rating)

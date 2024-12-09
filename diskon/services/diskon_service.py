@@ -54,27 +54,6 @@ class DiscountService:
         """
         result = fetch_dict_one(sql, [user_id])
         return result['saldo_mypay'] if result else 0
-
-    @staticmethod
-    def check_voucher_validity(kode_voucher):
-        # Cek kuota dan masa berlaku voucher
-        sql = """
-        SELECT kuota_penggunaan, jml_hari_berlaku, CURRENT_DATE
-        FROM sijarta.voucher
-        WHERE kode = %s;
-        """
-        result = fetch_dict_one(sql, [kode_voucher])
-        if not result:
-            return False  # Voucher tidak ditemukan
-
-        kuota = result['kuota_penggunaan']
-        masa_berlaku = result['jml_hari_berlaku']
-        
-        # Cek apakah kuota voucher masih ada dan masa berlaku masih aktif
-        if kuota <= 0 or masa_berlaku <= 0:
-            return False
-        
-        return True
     @staticmethod
     def update_saldo_mypay(harga_voucher, user_id):
         # Update saldo MyPay pengguna setelah pembelian

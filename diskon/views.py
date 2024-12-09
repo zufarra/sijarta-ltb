@@ -51,19 +51,6 @@ def beli_voucher(request):
                     "promo": promo,
                     'metode_bayar': DiscountService.get_all_metode_bayar(),
                 })
-
-            # Cek apakah voucher valid (kuota dan masa berlaku)
-            is_valid = DiscountService.check_voucher_validity(kode_voucher)
-            if not is_valid:
-                # Jika voucher tidak valid, tampilkan modal gagal
-                return render(request, 'show_diskon.html', {
-                    'status_modal': 'gagal',
-                    'message': 'Voucher tidak valid atau sudah habis kuotanya.',
-                    'voucher': DiscountService.get_all_vouchers(),
-                    "promo": promo,
-                    'metode_bayar': DiscountService.get_all_metode_bayar(),
-                })
-
             # Update saldo MyPay pengguna
             DiscountService.update_saldo_mypay(harga_voucher, user_id)
             # Record pembelian voucher
