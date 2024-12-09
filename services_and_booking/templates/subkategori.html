@@ -52,7 +52,6 @@
                         </td>
                         {% endif %}
                     </tr>
-
                     <div class="modal fade" id="pesanModal{{ session.sesi }}" tabindex="-1" aria-labelledby="pesanModalLabel{{ session.sesi }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -216,9 +215,31 @@
                             </div>
                             <div class="text-end">
                                 {% if user.id == testimoni.id_pelanggan %}
-                                <a href="{% url 'service:delete_testimoni' testimoni.id_tr_pemesanan testimoni.id_subkategori %}" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus testimonial ini?')">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusModal{{ testimoni.id_tr_pemesanan }}">
                                     Hapus
-                                </a>
+                                </button>
+                    
+                                <!-- Modal Konfirmasi Delete -->
+                                <div class="modal fade" id="hapusModal{{ testimoni.id_tr_pemesanan }}" tabindex="-1" aria-labelledby="hapusModalLabel{{ testimoni.id_tr_pemesanan }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="hapusModalLabel{{ testimoni.id_tr_pemesanan }}">Konfirmasi Hapus</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-start">
+                                                Apakah Anda yakin ingin menghapus testimonial ini?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form action="{% url 'service:delete_testimoni' testimoni.id_tr_pemesanan testimoni.id_subkategori %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
                                 {% endif %}
                             </div>
                         </div>

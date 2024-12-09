@@ -21,9 +21,9 @@ class TestimoniService:
             sijarta.pelanggan P ON P.id = TR.id_pelanggan
         JOIN 
             sijarta.user U ON U.id = P.id
-        LEFT JOIN 
+        JOIN 
             sijarta.pekerja Pekerja ON Pekerja.id = TR.id_pekerja
-        LEFT JOIN 
+        JOIN 
             sijarta.user W ON W.id = Pekerja.id
         WHERE 
             TR.id_kategori_jasa = %s;

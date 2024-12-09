@@ -70,10 +70,9 @@
                             <td>{{ pesanan.nama_pekerja|default:"-" }}</td>
                             <td>{{ pesanan.status }}</td>
                             <td>
-                                {% if pesanan.status == "Mencari Pekerja Terdekat" %} 
+                                {% if pesanan.status == "Menunggu Pembayaran" or pesanan.status == "Mencari Pekerja Terdekat" %} 
                                     <button class="btn btn-danger" style="width: 100%" data-bs-toggle="modal" data-bs-target="#batalkanModal{{ pesanan.id_pemesanan }}">Batalkan</button>
-                                {% elif pesanan.status == "Menunggu Pembayaran" %} 
-                                <!-- ZUFAR -->
+                                {% elif pesanan.status == "Pesanan Selesai" %} 
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testimoniModal_{{ pesanan.id_pemesanan }}" style="width: 100%;">Buat Testimoni</button>
                                 {% endif %}
                             </td>
