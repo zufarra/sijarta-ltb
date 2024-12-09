@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block meta %}
     <title>Transaksi</title>
 {% endblock meta %}
@@ -13,7 +14,7 @@
                     <div class="p-2 border rounded">{% now "d-m-Y" %}</div>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">Saldo: Rp{{ user.mypay_balance }}</div>
+                    <div class="p-2 border rounded" style="flex: 1; max-width: 50%;">Saldo: Rp{{ user.mypay_balance|intcomma }}</div>
                 </div>
                 <div class="dropdown mb-3">
                 </div>
@@ -113,7 +114,7 @@
     
         const bayarForm = document.querySelector('#form-bayar-jasa');
         if (bayarForm) {
-            bayarForm.addEventListener('submit', (event) => handleFormSubmit(event, '#form-bayar-jasa', '/mypay/bayar-jasa/'));
+            bayarForm.addEventListener('submit', (event) => handleFormSubmit(event, '#form-bayar-jasa', '/mypay/bayar_jasa/'));
         }
 
         // Blok kode di bawah ini berfungsi untuk mengubah nama dropdown bank secara dinamis pada withdrawal
@@ -129,6 +130,24 @@
                 namaBankInput.value = selectedBank; 
             });
         });
+
+        const pesananMenu = document.getElementById("pesanan_menu");
+        const hargaJasa = document.getElementById("harga_jasa");
+        const inputIdPesanan = document.getElementById("input_id_pesanan");
+        const inputHargaPesanan = document.getElementById("input_harga_pesanan");
+        const pesananDropdown = document.getElementById("pesanan_dropdown");
+
+        pesananMenu.addEventListener('click', function(e) {
+            const selectedPesanan = e.target;
+            if (selectedPesanan.tagName === 'A') {
+                pesananDropdown.textContent = selectedPesanan.textContent;
+                const harga = selectedPesanan.getAttribute("data-harga");
+                hargaJasa.textContent = `Harga: Rp${harga}`;           
+                inputIdPesanan.value = selectedPesanan.getAttribute("data-id");
+                inputHargaPesanan.value = harga;
+            }
+        });
     });
+    
 </script>
 {% endblock content %}
